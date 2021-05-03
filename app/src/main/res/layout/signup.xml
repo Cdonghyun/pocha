@@ -19,42 +19,50 @@
         android:layout_height="wrap_content">
 
     <EditText
-        android:id="@+id/suId"
+        android:id="@+id/edId"
         android:hint="Id"
         android:layout_marginLeft="30dp"
         android:layout_width="300dp"
         android:layout_height="wrap_content"/>
         <EditText
-            android:id="@+id/suPwd"
+            android:id="@+id/edPwd"
+            android:inputType="textPassword"
             android:hint="Password"
             android:layout_marginLeft="30dp"
             android:layout_width="300dp"
             android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/chkPwd"
+            android:inputType="textPassword"
+            android:hint="Check Password"
+            android:layout_marginLeft="30dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"/>
+        <RadioGroup
+            android:id="@+id/selectRg"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/selB"
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="구매자"
+                />
+            <RadioButton
+                android:id="@+id/selS"
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="판매자"
+                />
+        </RadioGroup>
 
-            <RadioGroup
-                android:id="@+id/selectRg"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <RadioButton
-                    android:id="@+id/selB"
-                    android:layout_marginLeft="30dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="구매자"
-                    />
-                <RadioButton
-                    android:id="@+id/selS"
-                    android:layout_marginLeft="30dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="판매자"
-                    />
-            </RadioGroup>
 
         <Button
-            android:onClick="signUpComplete"
+            android:id="@+id/signbt"
             android:layout_marginLeft="30dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
