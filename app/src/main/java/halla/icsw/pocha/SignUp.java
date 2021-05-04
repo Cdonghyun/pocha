@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.StrictMode;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +33,7 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 public class SignUp extends AppCompatActivity {
-    private EditText id,pwd,type;
+    private EditText id,pwd,chkpwd;
     private Button btn_send;
     RadioGroup rg;
     @Override
@@ -42,6 +43,7 @@ public class SignUp extends AppCompatActivity {
         NetworkUtil.setNetworkPolicy();
         id = (EditText)findViewById(R.id.edId);
         pwd = (EditText)findViewById(R.id.edPwd);
+        chkpwd = (EditText)findViewById(R.id.chkPwd);
         rg = (RadioGroup)findViewById(R.id.selectRg);
 
         btn_send = (Button)findViewById(R.id.signbt);
@@ -50,21 +52,29 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 int rgid = rg.getCheckedRadioButtonId();
                 RadioButton rb = (RadioButton)findViewById(rgid);
-                try {
+                if(TextUtils.isEmpty(id.getText().toString())){
+                    Toast.makeText(getApplication(),"ID가 입력되지 않았습니다",Toast.LENGTH_SHORT).show();
+                }else if(TextUtils.isEmpty(pwd.getText().toString())){
+                    Toast.makeText(getApplication(),"비밀번호가 입력되지 않았습니다",Toast.LENGTH_SHORT).show();
+                }else if(!pwd.getText().toString().equals(chkpwd.getText().toString())){
+                    Toast.makeText(getApplication(),"비밀번호가 일치하지 않았습니다",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    try {
                     PHPRequest request = new PHPRequest("http://101.101.210.207/insert.php");
-                    String result = request.PhPpocha(String.valueOf(id.getText()),String.valueOf(pwd.getText()),String.valueOf(rb.getText()));
+                    String result = request.PhPpocha(String.valueOf(id.getText()), String.valueOf(pwd.getText()), String.valueOf(rb.getText()));
 
-                    if(result.equals("1")){
-                        Toast.makeText(getApplication(),"들어감",Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(getApplication(),"안 들어감",Toast.LENGTH_SHORT).show();
+                    if (result.equals("1")) {
+                        Toast.makeText(getApplication(), "가입되었습니다", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplication(), "등록 실패", Toast.LENGTH_SHORT).show();
                     }
                 }catch (MalformedURLException e){
                     e.printStackTrace();
                 }
+                }
+
             }
         });
     }
 }
-
