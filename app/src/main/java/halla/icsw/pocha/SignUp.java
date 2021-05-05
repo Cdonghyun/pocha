@@ -2,6 +2,7 @@ package halla.icsw.pocha;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,6 +67,8 @@ public class SignUp extends AppCompatActivity {
 
                     if (result.equals("1")) {
                         Toast.makeText(getApplication(), "가입되었습니다", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(i);
                     } else {
                         Toast.makeText(getApplication(), "등록 실패", Toast.LENGTH_SHORT).show();
                     }
