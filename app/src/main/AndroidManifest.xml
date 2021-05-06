@@ -20,6 +20,10 @@
         <activity android:name=".BuyerMain"/>
         <activity android:name=".SellerMain"/>
         <activity android:name=".SignUp"/>
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="v7nmzqi0d1" />
     </application>
 
 </manifest>
