@@ -69,7 +69,9 @@ public class SignUp extends AppCompatActivity {
                         Toast.makeText(getApplication(), "가입되었습니다", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(i);
-                    } else {
+                    }else if (request.equals("2")){
+                        Toast.makeText(getApplication(),"이미 존재하는 아이디입니다",Toast.LENGTH_SHORT).show();
+                    }else {
                         Toast.makeText(getApplication(), "등록 실패", Toast.LENGTH_SHORT).show();
                     }
                 }catch (MalformedURLException e){
