@@ -29,7 +29,7 @@ public class PHPRequest {
         return jsonHtml.toString();
     }
 
-    public String PhPpocha(final String id, final String pwd,final String type) {
+    public String PhPsignup(final String id, final String pwd,final String type) {
         try {
             String postData = "id=" + id + "&" + "pwd=" + pwd +"&type="+type;
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -51,4 +51,7 @@ public class PHPRequest {
             return null;
         }
     }
+
+
+
 }

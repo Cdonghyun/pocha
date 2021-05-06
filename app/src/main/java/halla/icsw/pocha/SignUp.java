@@ -63,7 +63,7 @@ public class SignUp extends AppCompatActivity {
                 else{
                     try {
                     PHPRequest request = new PHPRequest("http://101.101.210.207/insert.php");
-                    String result = request.PhPpocha(String.valueOf(id.getText()), String.valueOf(pwd.getText()), String.valueOf(rb.getText()));
+                    String result = request.PhPsignup(String.valueOf(id.getText()), String.valueOf(pwd.getText()), String.valueOf(rb.getText()));
 
                     if (result.equals("1")) {
                         Toast.makeText(getApplication(), "가입되었습니다", Toast.LENGTH_SHORT).show();
