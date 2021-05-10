@@ -65,11 +65,11 @@ public class SignUp extends AppCompatActivity {
                     PHPRequest request = new PHPRequest("http://101.101.210.207/insert.php");
                     String result = request.PhPsignup(String.valueOf(id.getText()), String.valueOf(pwd.getText()), String.valueOf(rb.getText()));
 
-                    if (result.equals("1")) {
+                    if (result.equals("2")) {
                         Toast.makeText(getApplication(), "가입되었습니다", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(i);
-                    }else if (request.equals("2")){
+                    }else if (request.equals("1")){
                         Toast.makeText(getApplication(),"이미 존재하는 아이디입니다",Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(getApplication(), "등록 실패", Toast.LENGTH_SHORT).show();
@@ -78,7 +78,6 @@ public class SignUp extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 }
-
             }
         });
     }
