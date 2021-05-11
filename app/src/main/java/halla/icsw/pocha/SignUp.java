@@ -70,7 +70,7 @@ public class SignUp extends AppCompatActivity {
                         Intent i = new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(i);
                     } else {
-                        Toast.makeText(getApplication(), "등록 실패", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplication(), "이미 있는 아이디 입니다.", Toast.LENGTH_SHORT).show();
                     }
                 }catch (MalformedURLException e){
                     e.printStackTrace();

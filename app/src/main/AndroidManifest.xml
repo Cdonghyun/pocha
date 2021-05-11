@@ -20,10 +20,11 @@
         <activity android:name=".BuyerMain"/>
         <activity android:name=".SellerMain"/>
         <activity android:name=".SignUp"/>
-
+    //맵 ID값
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="v7nmzqi0d1" />
     </application>
-
+    //위치 권한
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 </manifest>

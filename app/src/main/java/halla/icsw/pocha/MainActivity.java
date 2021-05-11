@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.map);
     }
 
     public void logIn(View v) {
@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(getApplicationContext(),SellerMain.class);
             startActivity(i); }
         else Toast.makeText(this, "존재하지 않는 회원", Toast.LENGTH_SHORT).show();
-
 
     }
 
