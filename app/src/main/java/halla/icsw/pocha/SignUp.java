@@ -56,7 +56,7 @@ public class SignUp extends AppCompatActivity {
                 if(TextUtils.isEmpty(id.getText().toString())){
                     Toast.makeText(getApplication(),"ID가 입력되지 않았습니다",Toast.LENGTH_SHORT).show();
                 }else if(TextUtils.isEmpty(pwd.getText().toString())){
-                    Toast.makeText(getApplication(),"비밀번호가 입력되지 않았습니다",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(),"비밀번호가 입력되지 않았습니다.",Toast.LENGTH_SHORT).show();
                 }else if(!pwd.getText().toString().equals(chkpwd.getText().toString())){
                     Toast.makeText(getApplication(),"비밀번호가 일치하지 않았습니다",Toast.LENGTH_SHORT).show();
                 }
