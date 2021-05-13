@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map);
+        setContentView(R.layout.activity_main);
     }
 
     public void logIn(View v) {
@@ -27,14 +27,16 @@ public class MainActivity extends AppCompatActivity {
         loginPwd = (EditText) findViewById(R.id.edtPwd);
         String id = loginId.getText().toString();
         String pwd = loginPwd.getText().toString();
-        if (id.equals("구매자")&&pwd.equals("1234")){
+        /*if (id.equals("구매자")&&pwd.equals("1234")){
             Intent i = new Intent(getApplicationContext(),BuyerMain.class);
             startActivity(i);}
         else if (id.equals("판매자")&&pwd.equals("5678")){
             Intent i = new Intent(getApplicationContext(),SellerMain.class);
             startActivity(i); }
         else Toast.makeText(this, "존재하지 않는 회원", Toast.LENGTH_SHORT).show();
-
+         */
+        Intent i = new Intent(getApplicationContext(),BuyerMain.class);
+        startActivity(i);
     }
 
 
