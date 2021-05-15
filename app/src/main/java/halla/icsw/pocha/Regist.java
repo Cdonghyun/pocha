@@ -39,7 +39,7 @@ class Regist extends AppCompatActivity {
 
 
 
-
+/*
 
         try {
             PHPRequest request = new PHPRequest("http://101.101.210.207/insert.php");
@@ -55,8 +55,7 @@ class Regist extends AppCompatActivity {
         }catch (MalformedURLException e){
             e.printStackTrace();
         }
-
-
+*/
     }
 
 

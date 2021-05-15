@@ -9,10 +9,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.naver.maps.map.LocationTrackingMode;
+import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.UiSettings;
 import com.naver.maps.map.util.FusedLocationSource;
+
+import java.util.Map;
 
 public class BuyerMain extends AppCompatActivity
         implements OnMapReadyCallback {
@@ -25,8 +28,10 @@ public class BuyerMain extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buyer);
 
+        MapFragment mapFragment =(MapFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
-        locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
     }
 
     @Override
@@ -45,6 +50,7 @@ public class BuyerMain extends AppCompatActivity
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {//추가 여기
+        locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
         this.naverMap = naverMap;
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Face);//위치 방향 등등

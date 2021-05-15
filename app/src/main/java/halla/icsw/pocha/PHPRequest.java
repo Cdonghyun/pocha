@@ -52,7 +52,7 @@ public class PHPRequest {
         }
     }
 
-    public String PhPregist(final String id, ) {
+    public String PhPregist(final String id, final String pwd,final String type) {
         try {
             String postData = "id=" + id + "&" + "pwd=" + pwd +"&type="+type;
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
