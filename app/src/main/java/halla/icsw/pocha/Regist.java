@@ -18,6 +18,7 @@ public class Regist extends AppCompatActivity {
 
     ArrayList<ArrayList> menu = new ArrayList();
     ArrayList m = new ArrayList();
+    ArrayList<String> s = new ArrayList();
     EditText shopName, menuName, price;
     ListView list;
 
@@ -37,8 +38,9 @@ public class Regist extends AppCompatActivity {
         m.add(menuName.getText().toString());
         m.add(price.getText().toString());
         menu.add(m);
+        s.add(menuName.getText().toString()+"  ㅡ  "+price.getText().toString());
         ArrayAdapter itemsAdapter =
-                new ArrayAdapter(this, android.R.layout.simple_list_item_1, menu);
+                new ArrayAdapter(this, android.R.layout.simple_list_item_1, s);
         list.setAdapter(itemsAdapter);
 
     }
@@ -48,7 +50,7 @@ public class Regist extends AppCompatActivity {
         shopName = (EditText)findViewById(R.id.edShopName);
         String sname = shopName.getText().toString();
 
-       /* try {
+        try {
             PHPRequest request = new PHPRequest("http://101.101.210.207/menuInsert.php");
             String result = request.PHPregist(menu,sname);
 
@@ -62,7 +64,7 @@ public class Regist extends AppCompatActivity {
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }*/
+        }
 
 
 
