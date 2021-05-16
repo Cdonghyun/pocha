@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
@@ -27,18 +28,48 @@ public class BuyerMain extends AppCompatActivity
     private FusedLocationSource locationSource;
     private NaverMap naverMap;
     private boolean isCameraAnimated = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buyer);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide(); //타이틀바 숨기기
-
         MapFragment mapFragment =(MapFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+    }
+//    @Override
+    public void onCameraChange(int reason, boolean animated) {
+        isCameraAnimated = animated;
+    }
+
+//    @Override
+    public void onCameraIdle() {
+        if (isCameraAnimated) {
+            LatLng mapCenter = naverMap.getCameraPosition().target;
+            fetchStoreSale(mapCenter.latitude, mapCenter.longitude, 5000);
+        }
+    }
+
+
+    private void fetchStoreSale(double lat, double lng, int m) {
+       /* Retrofit retrofit = new Retrofit.Builder().baseUrl("https://8oi9s0nnth.apigw.ntruss.com").addConverterFactory(GsonConverterFactory.create()).build();
+        MaskApi maskApi = retrofit.create(MaskApi.class);
+        maskApi.getStoresByGeo(lat, lng, m).enqueue(new Callback<StoreSaleResult>() {
+            @Override
+            public void onResponse(Call<StoreSaleResult> call, Response<StoreSaleResult> response) {
+                if (response.code() == 200) {
+                    StoreSaleResult result = response.body();
+                    updateMapMarkers(result);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StoreSaleResult> call, Throwable t) {
+
+            }
+        });*/
     }
 
     @Override
@@ -54,33 +85,6 @@ public class BuyerMain extends AppCompatActivity
         super.onRequestPermissionsResult(
                 requestCode, permissions, grantResults);
     }
-//    @Override
-    public void onCameraIdle() { //위치 불러오기
-        if (isCameraAnimated) {
-            LatLng mapCenter = naverMap.getCameraPosition().target;
-            fetchStoreSale(mapCenter.latitude, mapCenter.longitude, 5000);
-        }
-    }
-
-
-    private void fetchStoreSale(double lat, double lng, int m) {
-//        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://8oi9s0nnth.apigw.ntruss.com").addConverterFactory(GsonConverterFactory.create()).build();
-//
-//        maskApi.getStoresByGeo(lat, lng, m).enqueue(new Callback<StoreSaleResult>() {
-//            @Override
-//            public void onResponse(Call<StoreSaleResult> call, Response<StoreSaleResult> response) {
-//                if (response.code() == 200) {
-//                    StoreSaleResult result = response.body();
-//                    updateMapMarkers(result);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<StoreSaleResult> call, Throwable t) {
-//
-//            }
-//        });
-    }
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {//추가 여기
@@ -94,6 +98,8 @@ public class BuyerMain extends AppCompatActivity
         uiSettings.setRotateGesturesEnabled(true);//회전
         uiSettings.setScrollGesturesEnabled(true);//스크롤
 
+        naverMap.addOnCameraChangeListener((NaverMap.OnCameraChangeListener) this);
+        naverMap.addOnCameraIdleListener((NaverMap.OnCameraIdleListener) this);
     }
 
 }
