@@ -20,6 +20,8 @@
         <activity android:name=".BuyerMain"/>
         <activity android:name=".SellerMain"/>
         <activity android:name=".SignUp"/>
+        <activity android:name=".Regist"/>
+
     //맵 ID값
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

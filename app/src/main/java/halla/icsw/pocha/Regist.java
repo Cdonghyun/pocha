@@ -3,7 +3,9 @@ package halla.icsw.pocha;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,10 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
-class Regist extends AppCompatActivity {
-    ArrayList menu = new ArrayList();
-    EditText name,menuName,price;
-    TextView text;
+public class Regist extends AppCompatActivity {
+
+    ArrayList<ArrayList> menu = new ArrayList();
+    ArrayList m = new ArrayList();
+    EditText shopName, menuName, price;
+    ListView list;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,38 +30,41 @@ class Regist extends AppCompatActivity {
     }
 
     public void menu(View v){
+        menuName = (EditText) findViewById(R.id.edMenu);
+        price = (EditText) findViewById(R.id.edPrice);
+        list= (ListView) findViewById(R.id.storedMenu);
 
-
+        m.add(menuName.getText().toString());
+        m.add(price.getText().toString());
+        menu.add(m);
+        ArrayAdapter itemsAdapter =
+                new ArrayAdapter(this, android.R.layout.simple_list_item_1, menu);
+        list.setAdapter(itemsAdapter);
 
     }
 
 
+    public void regist(View v) {
+        shopName = (EditText)findViewById(R.id.edShopName);
+        String sname = shopName.getText().toString();
 
-    public void regist(View v){
-
-
-
-
-
-
-/*
-
-        try {
-            PHPRequest request = new PHPRequest("http://101.101.210.207/insert.php");
-            String result = request.PhPregist(String.valueOf(id.getText()), String.valueOf(pwd.getText()), String.valueOf(rb.getText()));
+       /* try {
+            PHPRequest request = new PHPRequest("http://101.101.210.207/menuInsert.php");
+            String result = request.PHPregist(menu,sname);
 
             if (result.equals("1")) {
-                Toast.makeText(getApplication(), "가입되었습니다", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                Toast.makeText(getApplication(), "등록되었습니다", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getApplicationContext(), SellerMain.class);
                 startActivity(i);
             } else {
-                Toast.makeText(getApplication(), "이미 있는 아이디 입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), "등록 실패", Toast.LENGTH_SHORT).show();
             }
-        }catch (MalformedURLException e){
+
+        } catch (MalformedURLException e) {
             e.printStackTrace();
-        }
-*/
+        }*/
+
+
+
     }
-
-
 }

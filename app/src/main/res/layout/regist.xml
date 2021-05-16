@@ -5,7 +5,7 @@
     android:orientation="vertical"
     >
     <TextView
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -21,7 +21,8 @@
 
 
         <EditText
-            android:id="@+id/edName"
+            android:layout_marginTop="25dp"
+            android:id="@+id/edShopName"
             android:hint="가게 이름"
             android:layout_marginLeft="30dp"
             android:layout_width="300dp"
@@ -73,26 +74,26 @@
             android:gravity="center"
             />
 
-        <TextView
+        <ListView
             android:id="@+id/storedMenu"
             android:layout_width="match_parent"
-            android:layout_height="16dp"
-
-            />
+            android:layout_height="250dp"
 
 
-        <Button
-            android:layout_marginTop="30dp"
-            android:id="@+id/btRegist"
-            android:onClick="regist"
-            android:layout_marginLeft="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="등록하기"
             />
 
 
 
 
     </LinearLayout>
+    <Button
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:id="@+id/btRegist"
+        android:onClick="regist"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="등록하기"
+        />
+
 </LinearLayout>

@@ -28,8 +28,7 @@ public class BuyerMain extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buyer);
 
-        MapFragment mapFragment =(MapFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        MapFragment mapFragment =(MapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
     }
