@@ -6,10 +6,8 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
@@ -96,7 +94,6 @@ public class BuyerMain extends AppCompatActivity
         uiSettings.setRotateGesturesEnabled(true);//회전
         uiSettings.setScrollGesturesEnabled(true);//스크롤
 
-        LatLng mapCenter = naverMap.getCameraPosition().target;
     }
 
 }
