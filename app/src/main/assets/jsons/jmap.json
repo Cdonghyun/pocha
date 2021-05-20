@@ -1,0 +1,12 @@
+{
+  "count": 0,
+  "stores" : [
+    {
+      "name": "string",
+       "adr": "string",
+      "type": "string",
+      "lat": 0,
+      "lng": 0
+    }
+  ]
+}

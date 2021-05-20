@@ -1,5 +1,6 @@
 package halla.icsw.pocha;
 
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,8 @@ import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.UiSettings;
 import com.naver.maps.map.util.FusedLocationSource;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Callback;
@@ -29,6 +32,7 @@ public class BuyerMain extends AppCompatActivity
     private NaverMap naverMap;
     private boolean isCameraAnimated = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +42,12 @@ public class BuyerMain extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        AssetManager assetManager = getResources().getAssets();//asset폴더 가져오기
+
     }
+
+
+
 //    @Override
     public void onCameraChange(int reason, boolean animated) {
         isCameraAnimated = animated;
@@ -53,11 +62,12 @@ public class BuyerMain extends AppCompatActivity
     }
 
 
+
     private void fetchStoreSale(double lat, double lng, int m) {
        /* Retrofit retrofit = new Retrofit.Builder().baseUrl("https://8oi9s0nnth.apigw.ntruss.com").addConverterFactory(GsonConverterFactory.create()).build();
         MaskApi maskApi = retrofit.create(MaskApi.class);
         maskApi.getStoresByGeo(lat, lng, m).enqueue(new Callback<StoreSaleResult>() {
-            @Override
+            @Override // 호출이 성공했을때
             public void onResponse(Call<StoreSaleResult> call, Response<StoreSaleResult> response) {
                 if (response.code() == 200) {
                     StoreSaleResult result = response.body();
@@ -65,7 +75,7 @@ public class BuyerMain extends AppCompatActivity
                 }
             }
 
-            @Override
+            @Override // 호출이 실패 했을때.
             public void onFailure(Call<StoreSaleResult> call, Throwable t) {
 
             }
@@ -98,8 +108,9 @@ public class BuyerMain extends AppCompatActivity
         uiSettings.setRotateGesturesEnabled(true);//회전
         uiSettings.setScrollGesturesEnabled(true);//스크롤
 
-        naverMap.addOnCameraChangeListener((NaverMap.OnCameraChangeListener) this);
-        naverMap.addOnCameraIdleListener((NaverMap.OnCameraIdleListener) this);
+
+//        naverMap.addOnCameraChangeListener((NaverMap.OnCameraChangeListener) this);
+//        naverMap.addOnCameraIdleListener((NaverMap.OnCameraIdleListener) this);
     }
 
 }
