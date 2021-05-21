@@ -10,11 +10,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PHPRequest {
     private URL url;
+
 
     public PHPRequest(String url) throws MalformedURLException { this.url = new URL(url); }
 
@@ -31,6 +35,7 @@ public class PHPRequest {
     }
 
     public String PhPsignup(final String id, final String pwd,final String type) {
+
         try {
             String postData = "id=" + id + "&" + "pwd=" + pwd +"&type="+type;
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -55,15 +60,11 @@ public class PHPRequest {
 
 
 
-   public String PHPregist(ArrayList p, String n) {
 
- /*
-        for(int i=0;i<p.size();i++){
-             menu = p[i];
 
-        }*/
+   public String PHPregist(final String menuname, final String price, final String n, final String id) {
         try {
-           // String postData = "id=" + id + "&" + "pwd=" + pwd +"&type="+type;
+            String postData = "id=" + id + "&shopname=" + n +"&menuname="+menuname + "&price" + price;
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestMethod("POST");
@@ -71,7 +72,7 @@ public class PHPRequest {
             conn.setDoOutput(true);
             conn.setDoInput(true);
             OutputStream outputStream = conn.getOutputStream();
-           // outputStream.write(postData.getBytes("UTF-8"));
+            outputStream.write(postData.getBytes("UTF-8"));
             outputStream.flush();
             outputStream.close();
             String result = readStream(conn.getInputStream());
@@ -83,6 +84,4 @@ public class PHPRequest {
             return null;
         }
    }
-
-
 }
