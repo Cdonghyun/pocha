@@ -64,7 +64,7 @@ public class PHPRequest {
 
    public String PHPregist(final String menuname, final String price, final String n, final String id) {
         try {
-            String postData = "id=" + id + "&shopname=" + n +"&menuname="+menuname + "&price" + price;
+            String postData = "id=" + id + "&shopname=" + n +"&menuname="+menuname + "&price=" + price;
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestMethod("POST");
