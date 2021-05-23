@@ -57,11 +57,6 @@ public class PHPRequest {
             return null;
         }
     }
-
-
-
-
-
    public String PHPregist(final String menuname, final String price, final String n, final String id) {
         try {
             String postData = "id=" + id + "&shopname=" + n +"&menuname="+menuname + "&price=" + price;
@@ -84,4 +79,7 @@ public class PHPRequest {
             return null;
         }
    }
+
+
+
 }

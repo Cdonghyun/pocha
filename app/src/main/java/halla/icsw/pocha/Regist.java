@@ -24,7 +24,6 @@ public class Regist extends AppCompatActivity {
     ArrayList<String> s = new ArrayList();
     EditText shopName, menuName, price;
     ListView list;
-    Timer timer = new Timer();
     Button bt1,bt2;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +64,13 @@ public class Regist extends AppCompatActivity {
     }
 
     public void menu(View v) {
-
-
         m.add(menuName.getText().toString());
         m.add(price.getText().toString());
         menu.add(m);
-
         s.add(menuName.getText()+"  ㅡ  "+price.getText()+"원");
         ArrayAdapter itemsAdapter =
                 new ArrayAdapter(this, android.R.layout.simple_list_item_1, s);
         list.setAdapter(itemsAdapter);
-
     }
 
 

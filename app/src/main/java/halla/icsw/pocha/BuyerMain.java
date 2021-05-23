@@ -37,11 +37,9 @@ public class BuyerMain extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buyer);
-
         MapFragment mapFragment =(MapFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
         AssetManager assetManager = getResources().getAssets();//asset폴더 가져오기
 
     }
