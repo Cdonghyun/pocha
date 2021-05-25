@@ -21,6 +21,7 @@
         <activity android:name=".SellerMain"/>
         <activity android:name=".SignUp"/>
         <activity android:name=".Regist"/>
+        <activity android:name=".Selling"/>
 
     //맵 ID값
         <meta-data

@@ -36,7 +36,9 @@ public class SellerMain extends AppCompatActivity
         AssetManager assetManager = getResources().getAssets();//asset폴더 가져오기
 
     }
+
     public void shopStart(View v){
+
         Intent i = new Intent(getApplicationContext(),Selling.class);
         startActivity(i);
 

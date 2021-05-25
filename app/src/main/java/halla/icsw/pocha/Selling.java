@@ -23,7 +23,7 @@ public class Selling extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.regist);
+        setContentView(R.layout.selling);
         NetworkUtil.setNetworkPolicy();
         sw = (SwitchCompat)findViewById(R.id.sw);
         tx1 = (TextView)findViewById(R.id.ooptx);
