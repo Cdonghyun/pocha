@@ -1,116 +1,240 @@
 package halla.icsw.pocha;
 
-import android.content.res.AssetManager;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
+import android.os.Looper;
+import android.provider.Settings;
+import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.LocationTrackingMode;
-import com.naver.maps.map.MapFragment;
-import com.naver.maps.map.NaverMap;
-import com.naver.maps.map.OnMapReadyCallback;
-import com.naver.maps.map.UiSettings;
-import com.naver.maps.map.util.FusedLocationSource;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
+
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import java.util.Locale;
 
 public class BuyerMain extends AppCompatActivity
-        implements OnMapReadyCallback {
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
-    private FusedLocationSource locationSource;
-    private NaverMap naverMap;
-    private boolean isCameraAnimated = false;
+        implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
 
+    private GoogleMap mMap;
+    private Marker currentMarker=null;
+    private static final int GPS_ENABLE_REQUEST_CODE=2001;
+    private static final int UPDATE_INTERVAL_MS=1000; //1초
+    private static final int FASTEST_UPDATE_INTERVAL_MS=500;
+    private static final int PERMISSIONS_REQUEST_CODE=100;
+    boolean needRequest = false;
+    String[] REQUIRED_PERMISSIONS =
+            {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}; //외부 저장소
+
+    Location currentlocation;
+    LatLng currentposition;
+
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationRequest locationRequest;
+    private  Location location;
+    private View Layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buyer);
 
-        MapFragment mapFragment =(MapFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        AssetManager assetManager = getResources().getAssets();//asset폴더 가져오기
 
+        locationRequest= new LocationRequest().
+                setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)// 위치설정 변경
+                .setInterval(UPDATE_INTERVAL_MS)//
+                .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+
+        builder.addLocationRequest(locationRequest); //위치 설정 요청
+
+        fusedLocationClient =
+                LocationServices.getFusedLocationProviderClient(this);//권한 요청 인스턴스
+
+        SupportMapFragment supportMapFragment =(SupportMapFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);//콜백 해줄려고
     }
 
 
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+        mMap = googleMap;
 
-//    @Override
-    public void onCameraChange(int reason, boolean animated) {
-        isCameraAnimated = animated;
+
+        //퍼미션 있는지 확인
+        int FineLocationPermission = ContextCompat
+                .checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        // 이미있으면 허용된거 ㅇㅇ
+        int CoarseLocationPermission = ContextCompat
+                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        if (FineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                CoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
+            startLocationUpdate(); //위치 업데이트
+        } else {
+            //요청
+            if (ActivityCompat.shouldShowRequestPermissionRationale
+                    (this, REQUIRED_PERMISSIONS[0])) {
+                Snackbar.make(Layout, "위치 권한이 필요",
+                        Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ActivityCompat.requestPermissions(BuyerMain.this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
+                    }
+                }).show();
+
+            } else {
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
+            }
+        }
+        LatLng SEOUL = new LatLng(37.56, 126.97);//기본은 서울
+        mMap.getUiSettings().setMyLocationButtonEnabled(true); //위치 버튼 가능
+        MarkerOptions markerOptions = new MarkerOptions(); // 마커 생성
+        markerOptions.position(SEOUL);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));  // 초기 위치
+//        mMap.setMyLocationEnabled(true); //내위치 표시
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+        UiSettings settings = mMap.getUiSettings();
+        settings.setZoomControlsEnabled(true); //줌 버튼
     }
+    LocationCallback locationCallback = new LocationCallback(){
 
-//    @Override
-    public void onCameraIdle() {
-        if (isCameraAnimated) {
-            LatLng mapCenter = naverMap.getCameraPosition().target;
-            fetchStoreSale(mapCenter.latitude, mapCenter.longitude, 5000);
+        public void onLocationResult(LocationResult locationResult){
+            super.onLocationResult(locationResult);
+
+            List<Location> locationList = locationResult.getLocations();
+
+
+
+            if(locationList.size()>0){
+                currentlocation= locationList.get(locationList.size()-1);
+                location= locationList.get(0);
+
+                //현재위치!!!!! 사용할땐 setcurrentposition
+                currentposition= new LatLng(location.getLatitude(),location.getLongitude());
+
+                String markerTitle = getGeocoder(currentposition);// 지오코드 사용
+
+
+            }
+        }
+    };
+
+
+    public String getGeocoder(LatLng latLng){
+
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocation(
+                    latLng.latitude, latLng.longitude, 1);
+        }catch (IOException e){
+            return "지오코드 서비스 불가";
+        }catch (IllegalArgumentException e){
+            return"잘못된 gps";
+        }
+
+        if (addresses==null ||addresses.size()==0){
+            return "주소 잘못됨";
+        }else {
+            Address address = addresses.get(0);
+            return address.getAddressLine(0).toString();
         }
     }
 
+    private void startLocationUpdate(){//업데이트 해줄거
+        if (!checkLocationServicesStatus()){
+            GpsActivation();
+        }
+        else {
+            int FinePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+            int CoarsePermission = ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION);
+
+            if(FinePermission!= PackageManager.PERMISSION_GRANTED ||
+                    CoarsePermission != PackageManager.PERMISSION_GRANTED){
+                return;
+            }
+            fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper());
+            mMap.setMyLocationEnabled(true);//현재위치 표시
+
+        }
+
+    }
 
 
-    private void fetchStoreSale(double lat, double lng, int m) {
-       /* Retrofit retrofit = new Retrofit.Builder().baseUrl("https://8oi9s0nnth.apigw.ntruss.com").addConverterFactory(GsonConverterFactory.create()).build();
-        MaskApi maskApi = retrofit.create(MaskApi.class);
-        maskApi.getStoresByGeo(lat, lng, m).enqueue(new Callback<StoreSaleResult>() {
-            @Override // 호출이 성공했을때
-            public void onResponse(Call<StoreSaleResult> call, Response<StoreSaleResult> response) {
-                if (response.code() == 200) {
-                    StoreSaleResult result = response.body();
-                    updateMapMarkers(result);
+    public boolean checkLocationServicesStatus() {//네트워크 and gps켯는지 ㅇㅇ
+        LocationManager locationManager =(LocationManager)getSystemService(LOCATION_SERVICE);
+
+        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)||
+                locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+
+    private  void GpsActivation(){//gps키자
+        AlertDialog.Builder builder = new AlertDialog.Builder(BuyerMain.this);
+        builder.setTitle("위치 비활성화");
+        builder.setMessage("위치 서비스를 켜주세요");
+        builder.setCancelable(true);
+        builder.setPositiveButton("설정", (dialog, which) -> {
+            Intent callGps= new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivityForResult(callGps,GPS_ENABLE_REQUEST_CODE);
+        });
+
+        //gps 안킬꺼야
+        builder.setNegativeButton("취소", (dialog, which) -> dialog.cancel());
+        builder.create().show();
+    }
+
+    protected void onActivityResult(int requestCode,int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){//gps켯는지 검사
+
+            case GPS_ENABLE_REQUEST_CODE:
+                if(checkLocationServicesStatus()){
+                    if(checkLocationServicesStatus()){
+                        needRequest=true;
+                        return;
+                    }
                 }
-            }
-
-            @Override // 호출이 실패 했을때.
-            public void onFailure(Call<StoreSaleResult> call, Throwable t) {
-
-            }
-        });*/
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (locationSource.onRequestPermissionsResult(
-                requestCode, permissions, grantResults)) {
-            if (!locationSource.isActivated()) { // 권한 거부됨
-                naverMap.setLocationTrackingMode(LocationTrackingMode.None);
-            }
-            return;
+                break;
         }
-        super.onRequestPermissionsResult(
-                requestCode, permissions, grantResults);
     }
 
-    @Override
-    public void onMapReady(@NonNull NaverMap naverMap) {//추가 여기
-        locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
-        this.naverMap = naverMap;
-        naverMap.setLocationSource(locationSource);
-        naverMap.setLocationTrackingMode(LocationTrackingMode.Face);//위치 방향 등등
-        UiSettings uiSettings = naverMap.getUiSettings();
-        uiSettings.setLocationButtonEnabled(true);//현위치 버튼
-        uiSettings.setTiltGesturesEnabled(true);//기울기
-        uiSettings.setRotateGesturesEnabled(true);//회전
-        uiSettings.setScrollGesturesEnabled(true);//스크롤
 
-
-//        naverMap.addOnCameraChangeListener((NaverMap.OnCameraChangeListener) this);
-//        naverMap.addOnCameraIdleListener((NaverMap.OnCameraIdleListener) this);
+    private void setDefaultKeyMode() {
     }
 
 }
