@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class Selling extends AppCompatActivity {
@@ -31,10 +32,32 @@ public class Selling extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(getApplication(), "가게를 열었습니다", Toast.LENGTH_SHORT).show();
+                    try {
+                        String[] result = {null};
+                        PHPRequest request = new PHPRequest("http://101.101.210.207/statUpdate.php");
+                        result[0] = request.PHPstate("abcd","true");
+
+                        if (result[0].equals("1")) {
+                            Toast.makeText(getApplication(), "가게를 열었습니다", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }catch (MalformedURLException e){
+                        e.printStackTrace();
+                    }
                 }
+
                 else{
-                    Toast.makeText(getApplication(), "가게를 닫았습니다", Toast.LENGTH_SHORT).show();
+                    try {
+                        String[] result = {null};
+                        PHPRequest request = new PHPRequest("http://101.101.210.207/statUpdate.php");
+                        result[0] = request.PHPstate("abcd","false");
+
+                        if (result[0].equals("1")) {
+                            Toast.makeText(getApplication(), "가게를 닫았습니다", Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (MalformedURLException e){
+                        e.printStackTrace();
+                    }
 
                 }
 
