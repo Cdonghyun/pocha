@@ -46,7 +46,6 @@ public class SignUp extends AppCompatActivity {
         pwd = (EditText)findViewById(R.id.edPwd);
         chkpwd = (EditText)findViewById(R.id.chkPwd);
         rg = (RadioGroup)findViewById(R.id.selectRg);
-
         btn_send = (Button)findViewById(R.id.signbt);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
