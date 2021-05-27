@@ -19,7 +19,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".BuyerMain"/>
-        <activity android:name=".SellerMain"/>
         <activity android:name=".SignUp"/>
         <activity android:name=".Regist"/>
         <activity android:name=".Selling"/>
@@ -27,7 +26,7 @@
     //맵 ID값
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA3fd-rH4HRkBnsQpaSH9Co8KXGUGpZTXI" />
+            android:value="AIzaSyBouKNMTYbUbEs80ctbjMIivcCTmpKSINI" />
     </application>
     //위치 권한
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
