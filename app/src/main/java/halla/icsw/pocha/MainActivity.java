@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
@@ -29,7 +30,14 @@ public class MainActivity extends AppCompatActivity {
         loginPwd = (EditText) findViewById(R.id.edtPwd);
         String id = loginId.getText().toString();
         String pwd = loginPwd.getText().toString();
+        // 공유 프레퍼런스로 id 저장
+        SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putString("id",id);
+        edit.commit();
+
         if (id.equals("구매자")){
+
             Intent i = new Intent(getApplicationContext(),BuyerMain.class);
             startActivity(i);}
 

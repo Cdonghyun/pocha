@@ -1,6 +1,7 @@
 package halla.icsw.pocha;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -36,6 +37,7 @@ public class Regist extends AppCompatActivity {
         shopName = (EditText)findViewById(R.id.edShopName);
         bt1 =(Button)findViewById(R.id.btRegist);
         bt2 =(Button)findViewById(R.id.btSt);
+        SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
         final String[] result = {null};
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +48,7 @@ public class Regist extends AppCompatActivity {
                 try {
                     for(int i=0;i<menu.size();i++) {
                         request = new PHPRequest("http://101.101.210.207/menuInsert.php");
-                        result[0] = request.PHPregist(String.valueOf(menu.get(i).get(0)), String.valueOf(menu.get(i).get(1)), String.valueOf(sname), "abcd");
+                        result[0] = request.PHPregist(String.valueOf(menu.get(i).get(0)), String.valueOf(menu.get(i).get(1)), String.valueOf(sname), pref.getString("id",""));
                     }
                     if (result[0].equals("1")) {
                         Toast.makeText(getApplication(), "등록되었습니다", Toast.LENGTH_SHORT).show();

@@ -1,6 +1,7 @@
 package halla.icsw.pocha;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,8 @@ public class Selling extends AppCompatActivity {
         NetworkUtil.setNetworkPolicy();
         sw = (SwitchCompat)findViewById(R.id.sw);
         tx1 = (TextView)findViewById(R.id.ooptx);
+        SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
+
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -35,7 +38,7 @@ public class Selling extends AppCompatActivity {
                     try {
                         String[] result = {null};
                         PHPRequest request = new PHPRequest("http://101.101.210.207/statUpdate.php");
-                        result[0] = request.PHPstate("abcd","true");
+                        result[0] = request.PHPstate(pref.getString("id",""),"true");
 
                         if (result[0].equals("1")) {
                             Toast.makeText(getApplication(), "가게를 열었습니다", Toast.LENGTH_SHORT).show();
@@ -50,7 +53,7 @@ public class Selling extends AppCompatActivity {
                     try {
                         String[] result = {null};
                         PHPRequest request = new PHPRequest("http://101.101.210.207/statUpdate.php");
-                        result[0] = request.PHPstate("abcd","false");
+                        result[0] = request.PHPstate(pref.getString("id",""),"false");
 
                         if (result[0].equals("1")) {
                             Toast.makeText(getApplication(), "가게를 닫았습니다", Toast.LENGTH_SHORT).show();

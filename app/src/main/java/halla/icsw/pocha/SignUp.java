@@ -37,6 +37,7 @@ public class SignUp extends AppCompatActivity {
     private EditText id,pwd,chkpwd;
     private Button btn_send;
     RadioGroup rg;
+    RadioButton selB,selS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,8 @@ public class SignUp extends AppCompatActivity {
         chkpwd = (EditText)findViewById(R.id.chkPwd);
         rg = (RadioGroup)findViewById(R.id.selectRg);
         btn_send = (Button)findViewById(R.id.signbt);
+        selB = (RadioButton)findViewById(R.id.selB);
+        selS = (RadioButton)findViewById(R.id.selS);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +61,8 @@ public class SignUp extends AppCompatActivity {
                     Toast.makeText(getApplication(),"비밀번호가 입력되지 않았습니다.",Toast.LENGTH_SHORT).show();
                 }else if(!pwd.getText().toString().equals(chkpwd.getText().toString())){
                     Toast.makeText(getApplication(),"비밀번호가 일치하지 않았습니다",Toast.LENGTH_SHORT).show();
+                }else if(selB.isChecked()==false&&selS.isChecked()==false){
+                    Toast.makeText(getApplication(),"유형을 선택하세요",Toast.LENGTH_SHORT).show();
                 }
                 else{
                     try {
