@@ -86,7 +86,6 @@ public class SellerMain extends AppCompatActivity
         mapFragment.getMapAsync(this);//콜백 해줄려고
     }
     public void shopStart(View v){
-
         Intent i = new Intent(getApplicationContext(),Selling.class);
         startActivity(i);
     }

@@ -36,11 +36,10 @@ public class Selling extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     try {
-                        String[] result = {null};
                         PHPRequest request = new PHPRequest("http://101.101.210.207/statUpdate.php");
-                        result[0] = request.PHPstate(pref.getString("id",""),"true");
+                        String result = request.PHPstate(pref.getString("id",""),"true");
 
-                        if (result[0].equals("1")) {
+                        if (result.equals("1")) {
                             Toast.makeText(getApplication(), "가게를 열었습니다", Toast.LENGTH_SHORT).show();
                         }
 
@@ -51,11 +50,10 @@ public class Selling extends AppCompatActivity {
 
                 else{
                     try {
-                        String[] result = {null};
                         PHPRequest request = new PHPRequest("http://101.101.210.207/statUpdate.php");
-                        result[0] = request.PHPstate(pref.getString("id",""),"false");
+                        String result = request.PHPstate(pref.getString("id",""),"false");
 
-                        if (result[0].equals("1")) {
+                        if (result.equals("1")) {
                             Toast.makeText(getApplication(), "가게를 닫았습니다", Toast.LENGTH_SHORT).show();
                         }
                     }catch (MalformedURLException e){

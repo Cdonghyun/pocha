@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);}
 
         else if (id.equals("판매자")){
-            Intent i = new Intent(getApplicationContext(),Selling.class);
+
+            Intent i = new Intent(getApplicationContext(),Regist.class);
             startActivity(i); }
 
         else Toast.makeText(this, "존재하지 않는 회원", Toast.LENGTH_SHORT).show();

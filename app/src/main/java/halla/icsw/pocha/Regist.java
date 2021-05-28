@@ -37,6 +37,7 @@ public class Regist extends AppCompatActivity {
         shopName = (EditText)findViewById(R.id.edShopName);
         bt1 =(Button)findViewById(R.id.btRegist);
         bt2 =(Button)findViewById(R.id.btSt);
+
         SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
         final String[] result = {null};
         bt1.setOnClickListener(new View.OnClickListener() {
@@ -52,8 +53,9 @@ public class Regist extends AppCompatActivity {
                     }
                     if (result[0].equals("1")) {
                         Toast.makeText(getApplication(), "등록되었습니다", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent i = new Intent(getApplicationContext(),SellerMain.class);
                         startActivity(i);
+
                     } else {
                         Toast.makeText(getApplication(), "등록 실패", Toast.LENGTH_SHORT).show();
                     }
@@ -66,13 +68,19 @@ public class Regist extends AppCompatActivity {
     }
 
     public void menu(View v) {
+
         m.add(menuName.getText().toString());
         m.add(price.getText().toString());
         menu.add(m);
+        m = new ArrayList<>();
         s.add(menuName.getText()+"  ㅡ  "+price.getText()+"원");
         ArrayAdapter itemsAdapter =
                 new ArrayAdapter(this, android.R.layout.simple_list_item_1, s);
         list.setAdapter(itemsAdapter);
+
+        menuName.setText("");
+        price.setText("");
+
     }
 
 
