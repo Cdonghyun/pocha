@@ -2,15 +2,17 @@ package halla.icsw.pocha;
 
 public class store {
     public String adr;
-    public String type;
+    public int price;
     public String name;
     public double lat;
     public double lng;
 
 
-public store(String adr,String type,String name, double lat, double lng){
+
+
+    public store(String adr, int price, String name, double lat, double lng){
     this.adr=adr;
-    this.type=type;
+    this.price=price;
     this.name=name;
     this.lat=lat;
     this.lng=lng;
@@ -25,13 +27,9 @@ public store(String adr,String type,String name, double lat, double lng){
         this.adr = adr;
     }
 
-    public String getType() {
-        return type;
-    }
+    public int getPrice() { return price; }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public void setPrice(int price) { this.price = price; }
 
     public String getName() {
         return name;
