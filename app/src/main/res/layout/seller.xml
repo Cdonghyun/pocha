@@ -8,7 +8,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:id="@+id/map"
+        android:id="@+id/sellmap"
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
     <Button

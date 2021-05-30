@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +52,8 @@ public class BuyerMain extends AppCompatActivity
     boolean needRequest = false;
     String[] REQUIRED_PERMISSIONS =
             {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}; //외부 저장소
+    PHPRequest request;
+    TextView tx;
 
     Location currentlocation;
     LatLng currentposition;
@@ -86,8 +89,20 @@ public class BuyerMain extends AppCompatActivity
         mapFragment.getMapAsync(this);//콜백 해줄려고
     }
 
+    public void bts(View v) {
+        try {
+            request = new PHPRequest("http://101.101.210.207/getMenu.php");
+            String result = request.PHPgetmenu("abcd");
+            tx.setText(result);
 
-    @Override
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+        @Override
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
 

@@ -65,7 +65,7 @@ public class SellerMain extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.seller);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.sellmap);
         mapFragment.getMapAsync(this);
 
 
@@ -82,9 +82,10 @@ public class SellerMain extends AppCompatActivity
                 LocationServices.getFusedLocationProviderClient(this);//권한 요청 인스턴스
 
         SupportMapFragment supportMapFragment =(SupportMapFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.sellmap);
         mapFragment.getMapAsync(this);//콜백 해줄려고
     }
+
     public void shopStart(View v){
         Intent i = new Intent(getApplicationContext(),Selling.class);
         startActivity(i);
