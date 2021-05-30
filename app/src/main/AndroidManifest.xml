@@ -26,7 +26,7 @@
     //맵 ID값
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBouKNMTYbUbEs80ctbjMIivcCTmpKSINI" />
+            android:value="AIzaSyDAfycqy9CLS-dkjF7eqWori2g0tYhU-Hc" />
     </application>
     //위치 권한
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
