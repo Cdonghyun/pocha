@@ -127,5 +127,21 @@ public class PHPRequest {
         }
     }
 
+    public String getLocation() {
+        try {
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(5000);
+            conn.setDoInput(true);
+            String result = readStream(conn.getInputStream());
+            conn.disconnect();
+            return result;
+
+        } catch (Exception e) {
+            Log.i("getLocation", "request was failed.");
+            return null;
+        }
+    }
 
 }
