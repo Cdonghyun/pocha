@@ -68,7 +68,8 @@ public class BuyerMain extends AppCompatActivity
     private ArrayList<String>menuList = new ArrayList<String>();
     private ArrayList<String>shopList = new ArrayList<String>();
     private ArrayList<String>priceList = new ArrayList<String>();
-
+    private ArrayList<String>latlist = new ArrayList<String>();
+    private ArrayList<String>lnglist = new ArrayList<String>();
 
     Location currentlocation;
     LatLng currentposition;
@@ -77,17 +78,13 @@ public class BuyerMain extends AppCompatActivity
     private LocationRequest locationRequest;
     private  Location location;
     private View Layout;
+    private String ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buyer);
         NetworkUtil.setNetworkPolicy();
-
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
 
         locationRequest= new LocationRequest().
                 setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)// 위치설정 변경
@@ -103,12 +100,13 @@ public class BuyerMain extends AppCompatActivity
 
         SupportMapFragment supportMapFragment =(SupportMapFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);//콜백 해줄려고
+        supportMapFragment.getMapAsync(this);//콜백 해줄려고
     }
 
-    public void bts(View v) {
+    public void bts() {
         tx = (TextView)findViewById(R.id.tx);
         SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
+
         try {
             PHPRequest request = new PHPRequest("http://101.101.210.207/getMenu.php");
             String result = request.getMenu(pref.getString("id",""));
@@ -120,6 +118,7 @@ public class BuyerMain extends AppCompatActivity
                     menuList.add(jsonObject.getString("shopname"));
                     shopList.add(jsonObject.getString("menuname"));
                     priceList.add(jsonObject.getString("price"));
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -130,8 +129,38 @@ public class BuyerMain extends AppCompatActivity
             e.printStackTrace();
         }
 
-
     }
+
+    public void marker(){
+
+        try {
+            PHPRequest request = new PHPRequest("http://101.101.210.207/getLocation.php");
+            String result = request.getLocation();
+            Log.i("위치 마커",result);
+            System.out.println(result);
+            try {
+                jsonArray = new JSONArray(result);
+                for(int i = 0 ; i<jsonArray.length(); i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    MarkerOptions marker = new MarkerOptions();
+                    latlist.add(jsonObject.getString("lat"));
+                    lnglist.add(jsonObject.getString("lng"));
+
+//                    latLng = new LatLng(Double.parseDouble(jsonObject.getString("lat")), Double.parseDouble(jsonObject.getString("lng")));
+
+                    marker.position(new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng")));
+                    System.out.println(jsonObject);
+                    mMap.addMarker(marker);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        }
+
 
 
         @Override
@@ -165,15 +194,16 @@ public class BuyerMain extends AppCompatActivity
                 ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
             }
         }
-        LatLng SEOUL = new LatLng(37.56, 126.97);//기본은 서울
+        LatLng SEOUL = new LatLng(37.30282, 127.908137);//기본은 서울
         mMap.getUiSettings().setMyLocationButtonEnabled(true); //위치 버튼 가능
         MarkerOptions markerOptions = new MarkerOptions(); // 마커 생성
         markerOptions.position(SEOUL);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));  // 초기 위치
-//        mMap.setMyLocationEnabled(true); //내위치 표시
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
         UiSettings settings = mMap.getUiSettings();
         settings.setZoomControlsEnabled(true); //줌 버튼
+        marker();
+
     }
 
     LocationCallback locationCallback = new LocationCallback(){
@@ -199,29 +229,6 @@ public class BuyerMain extends AppCompatActivity
         }
     };
 
-    private void getStore(){//스토어 가져오기
-        ArrayList<store> storelist = new ArrayList<>();
-
-
-
-    }
-
-    public Marker addMarker(store store){
-        LatLng position = new LatLng(store.getLat(),store.getLng());
-        String name = store.getName();
-        String adr = store.getAdr();
-        int price = store.getPrice();
-        //마커
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title(name);
-        markerOptions.snippet(adr);// 타이틀 아래에ㅇㅇ 요약
-        markerOptions.position(position);//위치
-
-
-
-        return mMap.addMarker(markerOptions);
-
-    }
 
     public boolean onMarkerClick(Marker marker){ //마커 선택되면 가운대로
         CameraUpdate center = CameraUpdateFactory.newLatLng(marker.getPosition());
