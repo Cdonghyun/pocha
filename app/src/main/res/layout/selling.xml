@@ -37,6 +37,50 @@
                  />
 
         </RelativeLayout>
+        <ListView
+            android:id="@+id/menuList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            <EditText
+                android:id="@+id/edMenu"
+                android:hint="메뉴 이름"
+                android:layout_marginLeft="30dp"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:layout_below="@+id/edMenu"
+                android:id="@+id/edPrice"
+                android:hint="가격"
+                android:layout_marginLeft="30dp"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btSt"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="14dp"
+                android:layout_marginBottom="11dp"
+                android:layout_toRightOf="@+id/edPrice"
+                android:onClick="menu"
+                android:text="추가" />
+
+            <Button
+                android:id="@+id/btDel"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="51dp"
+                android:layout_toRightOf="@+id/edPrice"
+                android:onClick="menu"
+                android:text="삭제" />
+
+        </RelativeLayout>
 
 
 

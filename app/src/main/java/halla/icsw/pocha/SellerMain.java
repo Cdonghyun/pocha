@@ -2,6 +2,7 @@ package halla.icsw.pocha;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +26,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,10 +56,11 @@ public class SellerMain extends AppCompatActivity
     boolean needRequest = false;
     String[] REQUIRED_PERMISSIONS =
             {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}; //외부 저장소
+    PHPRequest request;
 
     Location currentlocation;
     LatLng currentposition;
-
+    private Marker getCurrentMarker;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private  Location location;
@@ -64,6 +70,8 @@ public class SellerMain extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.seller);
+        NetworkUtil.setNetworkPolicy();
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.sellmap);
         mapFragment.getMapAsync(this);
@@ -86,9 +94,18 @@ public class SellerMain extends AppCompatActivity
         mapFragment.getMapAsync(this);//콜백 해줄려고
     }
 
-    public void shopStart(View v){
-        Intent i = new Intent(getApplicationContext(),Selling.class);
-        startActivity(i);
+    public void shopStart(View v) {
+        SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
+        try {
+            PHPRequest request = new PHPRequest("http://101.101.210.207/insertLocation.php");
+            String result = request.InsertLocation(pref.getString("id",""),location.getLatitude(),location.getLongitude());
+            if(result.equals("1")){
+                Toast.makeText(getApplication(), "등록되었습니다", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -133,13 +150,13 @@ public class SellerMain extends AppCompatActivity
         UiSettings settings = mMap.getUiSettings();
         settings.setZoomControlsEnabled(true); //줌 버튼
     }
+
     LocationCallback locationCallback = new LocationCallback(){
 
         public void onLocationResult(LocationResult locationResult){
             super.onLocationResult(locationResult);
 
             List<Location> locationList = locationResult.getLocations();
-
 
 
             if(locationList.size()>0){
@@ -152,9 +169,42 @@ public class SellerMain extends AppCompatActivity
                 String markerTitle = getGeocoder(currentposition);// 지오코드 사용
 
 
+
             }
         }
     };
+
+    private void getStore(){//스토어 가져오기
+        ArrayList<store> storelist = new ArrayList<>();
+
+
+
+    }
+
+    public Marker addMarker(store store){
+        LatLng position = new LatLng(store.getLat(),store.getLng());
+        String name = store.getName();
+        String adr = store.getAdr();
+        int price = store.getPrice();
+        //마커
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.title(name);
+        markerOptions.snippet(adr);// 타이틀 아래에ㅇㅇ 요약
+        markerOptions.position(position);//위치
+
+
+
+        return mMap.addMarker(markerOptions);
+
+    }
+
+    public boolean onMarkerClick(Marker marker){ //마커 선택되면 가운대로
+        CameraUpdate center = CameraUpdateFactory.newLatLng(marker.getPosition());
+        mMap.animateCamera(center);
+
+        return true;
+    }
+
 
 
     public String getGeocoder(LatLng latLng){

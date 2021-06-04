@@ -69,11 +69,6 @@ public class SignUp extends AppCompatActivity {
                     PHPRequest request = new PHPRequest("http://101.101.210.207/insert.php");
                     String result = request.PhPsignup(String.valueOf(id.getText()), String.valueOf(pwd.getText()), String.valueOf(rb.getText()));
 
-                        PHPRequest request1 = new PHPRequest("http://101.101.210.207/getLocation.php");
-                        String result1 = request1.getLocation();
-                        System.out.println(result1);
-
-
                         if (result.equals("1")) {
                         Toast.makeText(getApplication(), "가입되었습니다", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getApplicationContext(),MainActivity.class);

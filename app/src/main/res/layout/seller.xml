@@ -7,11 +7,13 @@
     xmlns:tools="http://schemas.android.com/tools">
     <fragment
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="500dp"
         android:id="@+id/sellmap"
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
     <Button
+        android:layout_marginTop="15dp"
+        android:text="현재 위치로 시작하기"
         android:onClick="shopStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

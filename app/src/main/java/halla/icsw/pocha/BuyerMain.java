@@ -3,6 +3,7 @@ package halla.icsw.pocha;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,8 +12,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +40,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +61,14 @@ public class BuyerMain extends AppCompatActivity
     boolean needRequest = false;
     String[] REQUIRED_PERMISSIONS =
             {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}; //외부 저장소
-    PHPRequest request;
     TextView tx;
+
+    JSONArray jsonArray;
+
+    private ArrayList<String>menuList = new ArrayList<String>();
+    private ArrayList<String>shopList = new ArrayList<String>();
+    private ArrayList<String>priceList = new ArrayList<String>();
+
 
     Location currentlocation;
     LatLng currentposition;
@@ -69,6 +82,8 @@ public class BuyerMain extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buyer);
+        NetworkUtil.setNetworkPolicy();
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -92,15 +107,30 @@ public class BuyerMain extends AppCompatActivity
     }
 
     public void bts(View v) {
+        tx = (TextView)findViewById(R.id.tx);
+        SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
         try {
-            request = new PHPRequest("http://101.101.210.207/getMenu.php");
-            String result = request.PHPgetmenu("abcd");
-            tx.setText(result);
-
+            PHPRequest request = new PHPRequest("http://101.101.210.207/getMenu.php");
+            String result = request.getMenu(pref.getString("id",""));
+            Log.i("데이터",result);
+            try {
+                jsonArray = new JSONArray(result);
+                for(int i = 0 ; i<jsonArray.length(); i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    menuList.add(jsonObject.getString("shopname"));
+                    shopList.add(jsonObject.getString("menuname"));
+                    priceList.add(jsonObject.getString("price"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            tx.setText(menuList.toString()+shopList.toString()+priceList.toString());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
 
@@ -162,6 +192,7 @@ public class BuyerMain extends AppCompatActivity
                 currentposition= new LatLng(location.getLatitude(),location.getLongitude());
 
                 String markerTitle = getGeocoder(currentposition);// 지오코드 사용
+
 
 
             }
