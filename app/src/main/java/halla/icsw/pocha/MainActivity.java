@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             PHPRequest request = new PHPRequest("http://101.101.210.207/Login.php");
             String result = request.Login(id,pwd);
+            Log.i("아이디 타입",result);
 
             if(result.equals("1")){
                 Toast.makeText(getApplication(), "id 비밀번호 일치", Toast.LENGTH_SHORT).show();
