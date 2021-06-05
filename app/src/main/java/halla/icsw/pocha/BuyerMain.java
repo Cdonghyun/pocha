@@ -70,7 +70,7 @@ public class BuyerMain extends AppCompatActivity
     private ArrayList<String>priceList = new ArrayList<String>();
     private ArrayList<String>latlist = new ArrayList<String>();
     private ArrayList<String>lnglist = new ArrayList<String>();
-
+    private ArrayList<String>IDlist = new ArrayList<String>();
     Location currentlocation;
     LatLng currentposition;
     private Marker getCurrentMarker;
@@ -137,19 +137,20 @@ public class BuyerMain extends AppCompatActivity
             PHPRequest request = new PHPRequest("http://101.101.210.207/getLocation.php");
             String result = request.getLocation();
             Log.i("위치 마커",result);
-            System.out.println(result);
             try {
                 jsonArray = new JSONArray(result);
                 for(int i = 0 ; i<jsonArray.length(); i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     MarkerOptions marker = new MarkerOptions();
+
                     latlist.add(jsonObject.getString("lat"));
                     lnglist.add(jsonObject.getString("lng"));
-
-//                    latLng = new LatLng(Double.parseDouble(jsonObject.getString("lat")), Double.parseDouble(jsonObject.getString("lng")));
+                    IDlist.add(jsonObject.getString("id"));
+                    menuList.add(jsonObject.getString("shopname"));
 
                     marker.position(new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng")));
-                    System.out.println(jsonObject);
+                    marker.title(new String(jsonObject.getString("shopname")));
+
                     mMap.addMarker(marker);
                 }
             } catch (JSONException e) {
@@ -230,13 +231,6 @@ public class BuyerMain extends AppCompatActivity
     };
 
 
-    public boolean onMarkerClick(Marker marker){ //마커 선택되면 가운대로
-        CameraUpdate center = CameraUpdateFactory.newLatLng(marker.getPosition());
-        mMap.animateCamera(center);
-
-        return true;
-    }
-
 
 
     public String getGeocoder(LatLng latLng){
@@ -274,6 +268,7 @@ public class BuyerMain extends AppCompatActivity
             }
             fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper());
             mMap.setMyLocationEnabled(true);//현재위치 표시
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
 
         }
 

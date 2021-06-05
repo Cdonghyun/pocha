@@ -132,6 +132,7 @@ public class PHPRequest {
 
     public String getLocation() {
         try {
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestMethod("GET");
