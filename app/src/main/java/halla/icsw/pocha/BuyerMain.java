@@ -123,8 +123,12 @@ public class BuyerMain extends AppCompatActivity
                     lnglist.add(jsonObject.getString("lng"));
                     IDlist.add(jsonObject.getString("id"));
                     marker.position(new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng")));
+//                    LatLng latLng = new LatLng(jsonObject.getDouble("lat"), jsonObject.getDouble("lng"));
+//                    marker.position(latLng);
                     marker.title(new String(jsonObject.getString("shopname")));
                     mMap.addMarker(marker);
+
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
                     mMap.setOnInfoWindowClickListener(this::onInfoWindowClick);
 
                 }
@@ -159,6 +163,8 @@ public class BuyerMain extends AppCompatActivity
             startActivity(i);
 
         }
+
+
 
         @Override
     public void onMapReady(final GoogleMap googleMap) {
