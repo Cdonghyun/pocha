@@ -101,6 +101,8 @@ public class SellerMain extends AppCompatActivity
             String result = request.InsertLocation(pref.getString("id",""),location.getLatitude(),location.getLongitude());
             if(result.equals("1")){
                 Toast.makeText(getApplication(), "등록되었습니다", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getApplicationContext(),Selling.class);
+                startActivity(i);
             }
 
         } catch (Exception e) {

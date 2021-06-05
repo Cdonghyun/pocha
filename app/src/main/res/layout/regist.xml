@@ -14,7 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -49,34 +48,49 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp">
+
                     <EditText
                         android:id="@+id/edMenu"
-                        android:hint="메뉴 이름"
-                        android:layout_marginLeft="30dp"
                         android:layout_width="230dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:hint="메뉴 이름" />
+
                     <EditText
-                        android:layout_below="@+id/edMenu"
                         android:id="@+id/edPrice"
-                        android:hint="가격"
-                        android:layout_marginLeft="30dp"
                         android:layout_width="230dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/edMenu"
+                        android:layout_marginLeft="30dp"
+                        android:hint="가격" />
 
                     <Button
                         android:id="@+id/btSt"
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:onClick="menu"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginLeft="-1dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginBottom="11dp"
                         android:layout_toRightOf="@+id/edPrice"
-                        android:text="저장"
-                        />
+                        android:onClick="menu"
+                        android:text="저장" />
 
+                    <Button
+                        android:id="@+id/btDel"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="77dp"
+                        android:layout_marginTop="41dp"
+                        android:layout_toRightOf="@+id/edPrice"
+                        android:text="삭제" />
                 </RelativeLayout>
 
+                <LinearLayout
+                android:id="@+id/mlistlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
@@ -85,23 +99,35 @@
                     />
 
                 <ListView
+                    android:layout_margin="10dp"
+                    android:choiceMode="multipleChoice"
                     android:id="@+id/storedMenu"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-
                     />
+            </LinearLayout>
+
 
 
 
             </LinearLayout>
-            <Button
+            <LinearLayout
                 android:layout_gravity="center"
-                android:id="@+id/btRegist"
-                android:onClick="regist"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:text="등록하기"
-                />
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_gravity="center"
+                    android:id="@+id/btRegist"
+                    android:onClick="regist"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="등록하기"
+                    />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 

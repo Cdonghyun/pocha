@@ -3,10 +3,12 @@ package halla.icsw.pocha;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +27,8 @@ public class Regist extends AppCompatActivity {
     ArrayList<String> s = new ArrayList();
     EditText shopName, menuName, price;
     ListView list;
-    Button bt1,bt2;
+    Button bt1,bt2,bt3;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +40,32 @@ public class Regist extends AppCompatActivity {
         shopName = (EditText)findViewById(R.id.edShopName);
         bt1 =(Button)findViewById(R.id.btRegist);
         bt2 =(Button)findViewById(R.id.btSt);
+        bt3 = (Button)findViewById(R.id.btDel);
 
-        SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
         final String[] result = {null};
+        SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
+        ArrayAdapter adapter =
+                new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, s);
+        list.setAdapter(adapter);
+
+
+        bt3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SparseBooleanArray check= list.getCheckedItemPositions();
+                int count = adapter.getCount() ;
+
+                for (int i = count-1; i >= 0; i--) {
+                    if (check.get(i)) {
+                        s.remove(i);
+                        menu.remove(i);
+                    }
+                }
+                list.clearChoices() ;
+                adapter.notifyDataSetChanged();
+
+            }
+        });
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +91,8 @@ public class Regist extends AppCompatActivity {
             }
         });
 
+
+
     }
 
     public void menu(View v) {
@@ -74,13 +102,11 @@ public class Regist extends AppCompatActivity {
         menu.add(m);
         m = new ArrayList<>();
         s.add(menuName.getText()+"  ㅡ  "+price.getText()+"원");
-        ArrayAdapter itemsAdapter =
-                new ArrayAdapter(this, android.R.layout.simple_list_item_1, s);
-        list.setAdapter(itemsAdapter);
         menuName.setText("");
         price.setText("");
 
     }
+
 
 
 }
