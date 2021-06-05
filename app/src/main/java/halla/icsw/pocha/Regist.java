@@ -90,9 +90,6 @@ public class Regist extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
     public void menu(View v) {
@@ -104,9 +101,5 @@ public class Regist extends AppCompatActivity {
         s.add(menuName.getText()+"  ㅡ  "+price.getText()+"원");
         menuName.setText("");
         price.setText("");
-
     }
-
-
-
 }

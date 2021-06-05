@@ -18,16 +18,16 @@
             />
         <TextView
             android:id="@+id/state"
-            android:text="상태 : OPEN"
+            android:text="상태 : CLOSE"
+            android:textSize="20dp"
             android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            />
+        <ListView
+            android:id="@+id/buymenulist"
+            android:layout_width="wrap_content"
+            android:layout_height="400dp"/>
 
 
     </LinearLayout>

@@ -63,7 +63,7 @@ public class SellerMain extends AppCompatActivity
     private Marker getCurrentMarker;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
-    private  Location location;
+    private Location location;
     private View Layout;
 
     @Override

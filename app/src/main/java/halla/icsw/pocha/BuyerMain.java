@@ -45,6 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -64,6 +65,8 @@ public class BuyerMain extends AppCompatActivity
     TextView tx;
 
     JSONArray jsonArray;
+    JSONObject jsonObject;
+    MarkerOptions marker;
 
     private ArrayList<String>menuList = new ArrayList<String>();
     private ArrayList<String>shopList = new ArrayList<String>();
@@ -71,6 +74,7 @@ public class BuyerMain extends AppCompatActivity
     private ArrayList<String>latlist = new ArrayList<String>();
     private ArrayList<String>lnglist = new ArrayList<String>();
     private ArrayList<String>IDlist = new ArrayList<String>();
+    private ArrayList ja=new ArrayList<>();
     Location currentlocation;
     LatLng currentposition;
     private Marker getCurrentMarker;
@@ -79,7 +83,6 @@ public class BuyerMain extends AppCompatActivity
     private  Location location;
     private View Layout;
     private String ad;
-    private Object marker;
 
 
     @Override
@@ -105,34 +108,6 @@ public class BuyerMain extends AppCompatActivity
         supportMapFragment.getMapAsync(this);//콜백 해줄려고
     }
 
-    public void bts() {
-        tx = (TextView)findViewById(R.id.tx);
-        SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
-
-        try {
-            PHPRequest request = new PHPRequest("http://101.101.210.207/getMenu.php");
-            String result = request.getMenu(pref.getString("id",""));
-            Log.i("데이터",result);
-            try {
-                jsonArray = new JSONArray(result);
-                for(int i = 0 ; i<jsonArray.length(); i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    menuList.add(jsonObject.getString("shopname"));
-                    shopList.add(jsonObject.getString("menuname"));
-                    priceList.add(jsonObject.getString("price"));
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            tx.setText(menuList.toString()+shopList.toString()+priceList.toString());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public void marker(){
 
         try {
@@ -142,14 +117,11 @@ public class BuyerMain extends AppCompatActivity
             try {
                 jsonArray = new JSONArray(result);
                 for(int i = 0 ; i<jsonArray.length(); i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    MarkerOptions marker = new MarkerOptions();
-
+                    jsonObject = jsonArray.getJSONObject(i);
+                    marker = new MarkerOptions();
                     latlist.add(jsonObject.getString("lat"));
                     lnglist.add(jsonObject.getString("lng"));
                     IDlist.add(jsonObject.getString("id"));
-                    menuList.add(jsonObject.getString("shopname"));
-
                     marker.position(new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng")));
                     marker.title(new String(jsonObject.getString("shopname")));
                     mMap.addMarker(marker);
@@ -166,8 +138,26 @@ public class BuyerMain extends AppCompatActivity
         }
 
         public void onInfoWindowClick(Marker marker){
+        SharedPreferences pref = getSharedPreferences("shopID",MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
+
+        edit.commit();
+        double la,ln;
+        la=marker.getPosition().latitude;
+        ln=marker.getPosition().longitude;
+            Log.i("마커 위치",la+" "+ln);
+            try {
+                PHPRequest request = new PHPRequest("http://101.101.210.207/getShopID.php");
+                String result = request.GetShopID(la,ln);
+                Log.i("가게 id",result);
+                edit.putString("shopid",result);
+                edit.commit();
+            }catch (MalformedURLException e){
+                e.printStackTrace();
+            }
             Intent i = new Intent(getApplicationContext(),Shopinfor.class);
             startActivity(i);
+
         }
 
         @Override

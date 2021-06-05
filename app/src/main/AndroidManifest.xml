@@ -23,6 +23,7 @@
         <activity android:name=".SignUp"/>
         <activity android:name=".Regist"/>
         <activity android:name=".Selling"/>
+        <activity android:name=".Shopinfor"/>
 
     //맵 ID값
         <meta-data
