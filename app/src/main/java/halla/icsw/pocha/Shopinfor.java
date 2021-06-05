@@ -24,9 +24,6 @@ public class Shopinfor extends AppCompatActivity {
     ArrayList<String> s = new ArrayList();
     TextView shopName,state;
     ListView list;
-    private ArrayList<String> menuList = new ArrayList<String>();
-    private ArrayList<String>shopList = new ArrayList<String>();
-    private ArrayList<String>priceList = new ArrayList<String>();
     JSONArray jsonArray;
     JSONObject jsonObject;
 
@@ -38,13 +35,13 @@ public class Shopinfor extends AppCompatActivity {
         shopName = (TextView)findViewById(R.id.shopName);
         state = (TextView)findViewById(R.id.state);
 
-        shop();
+        showShop();
         ArrayAdapter adapter =
                 new ArrayAdapter(this, android.R.layout.simple_list_item_1, s);
         list.setAdapter(adapter);
     }
 
-    public void shop() {
+    public void showShop() {
         SharedPreferences pref = getSharedPreferences("shopID",MODE_PRIVATE);
         try {
             PHPRequest request = new PHPRequest("http://101.101.210.207/getMenu.php");
@@ -61,7 +58,7 @@ public class Shopinfor extends AppCompatActivity {
                     s.add(menu.get(i).get(0)+"      ㅡ      "+menu.get(i).get(1)+"원");
                 }
                 shopName.setText(jsonObject.getString("shopname"));
-                if(jsonObject.getString("ststus").equals("0")){
+                if(jsonObject.getString("status").equals("0")){
                     state.setText("상태 : CLOSE");
                 }else state.setText("상태 : OPEN");
             } catch (JSONException e) {

@@ -93,7 +93,6 @@ public class Regist extends AppCompatActivity {
     }
 
     public void menu(View v) {
-
         m.add(menuName.getText().toString());
         m.add(price.getText().toString());
         menu.add(m);

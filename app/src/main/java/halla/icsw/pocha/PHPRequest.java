@@ -105,8 +105,6 @@ public class PHPRequest {
         }
     }
     public String getMenu(final String id) {
-
-
         try {
                     String postData = "id=" + id;
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -121,9 +119,7 @@ public class PHPRequest {
                     outputStream.close();
                     String result = readStream(conn.getInputStream());
                     conn.disconnect();
-
                     return result;
-
         } catch (Exception e) {
                     Log.i("PHPRequest", "request was failed.");
                     return null;

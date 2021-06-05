@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:id="@+id/shopname"
             android:layout_marginTop="30dp"
             android:textSize="30dp"
             android:layout_width="match_parent"
@@ -21,7 +22,7 @@
             <TextView
                 android:id="@+id/ooptx"
                 android:textSize="20dp"
-                android:text="가게 오픈"
+                android:text="가게 CLOSE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -37,62 +38,70 @@
                  />
 
         </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <EditText
+            android:id="@+id/edMenu"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:hint="메뉴 이름" />
+
+        <EditText
+            android:id="@+id/edPrice"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edMenu"
+            android:layout_marginLeft="30dp"
+            android:hint="가격" />
+
+        <Button
+            android:id="@+id/btAdd"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="11dp"
+            android:layout_toRightOf="@+id/edPrice"
+            android:onClick="menu"
+            android:text="추가" />
+
+        <Button
+            android:id="@+id/btDelete"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="77dp"
+            android:layout_marginTop="41dp"
+            android:layout_toRightOf="@+id/edPrice"
+            android:text="삭제" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="등록된 메뉴"
+            android:gravity="center"
+            />
+
         <ListView
-            android:clickable="true"
-            android:id="@+id/menuList"
+            android:layout_margin="10dp"
+            android:choiceMode="multipleChoice"
+            android:id="@+id/manageMenu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp">
-            <EditText
-                android:id="@+id/edMenu"
-                android:hint="메뉴 이름"
-                android:layout_marginLeft="30dp"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content"/>
-            <EditText
-                android:layout_below="@+id/edMenu"
-                android:id="@+id/edPrice"
-                android:hint="가격"
-                android:layout_marginLeft="30dp"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:id="@+id/btSt"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="14dp"
-                android:layout_marginBottom="11dp"
-                android:layout_toRightOf="@+id/edPrice"
-                android:onClick="menu"
-                android:text="추가" />
-
-            <Button
-                android:id="@+id/btDel"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginBottom="51dp"
-                android:layout_toRightOf="@+id/edPrice"
-                android:onClick="menu"
-                android:text="삭제" />
-
-        </RelativeLayout>
-
-
-
-
-
-
-
+            android:layout_height="300dp"
+            />
     </LinearLayout>
 
-
-
+    </LinearLayout>
 </ScrollView>
 
 
