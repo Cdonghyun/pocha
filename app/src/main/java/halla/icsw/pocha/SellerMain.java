@@ -109,6 +109,7 @@ public class SellerMain extends AppCompatActivity
     }
 
 
+
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
@@ -140,7 +141,7 @@ public class SellerMain extends AppCompatActivity
                 ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
             }
         }
-        LatLng SEOUL = new LatLng(37.56, 126.97);//기본은 서울
+        LatLng SEOUL = new LatLng(37.505, 126.924);//기본은 서울
         mMap.getUiSettings().setMyLocationButtonEnabled(true); //위치 버튼 가능
         MarkerOptions markerOptions = new MarkerOptions(); // 마커 생성
         markerOptions.position(SEOUL);
@@ -174,29 +175,6 @@ public class SellerMain extends AppCompatActivity
         }
     };
 
-    private void getStore(){//스토어 가져오기
-        ArrayList<store> storelist = new ArrayList<>();
-
-
-
-    }
-
-    public Marker addMarker(store store){
-        LatLng position = new LatLng(store.getLat(),store.getLng());
-        String name = store.getName();
-        String adr = store.getAdr();
-        int price = store.getPrice();
-        //마커
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title(name);
-        markerOptions.snippet(adr);// 타이틀 아래에ㅇㅇ 요약
-        markerOptions.position(position);//위치
-
-
-
-        return mMap.addMarker(markerOptions);
-
-    }
 
     public boolean onMarkerClick(Marker marker){ //마커 선택되면 가운대로
         CameraUpdate center = CameraUpdateFactory.newLatLng(marker.getPosition());
