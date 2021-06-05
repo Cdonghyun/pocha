@@ -79,6 +79,8 @@ public class BuyerMain extends AppCompatActivity
     private  Location location;
     private View Layout;
     private String ad;
+    private Object marker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,8 +152,9 @@ public class BuyerMain extends AppCompatActivity
 
                     marker.position(new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng")));
                     marker.title(new String(jsonObject.getString("shopname")));
-
                     mMap.addMarker(marker);
+                    mMap.setOnInfoWindowClickListener(this::onInfoWindowClick);
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -162,7 +165,10 @@ public class BuyerMain extends AppCompatActivity
         }
         }
 
-
+        public void onInfoWindowClick(Marker marker){
+            Intent i = new Intent(getApplicationContext(),Shopinfor.class);
+            startActivity(i);
+        }
 
         @Override
     public void onMapReady(final GoogleMap googleMap) {
@@ -204,6 +210,7 @@ public class BuyerMain extends AppCompatActivity
         UiSettings settings = mMap.getUiSettings();
         settings.setZoomControlsEnabled(true); //줌 버튼
         marker();
+
 
     }
 
