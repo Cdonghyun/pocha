@@ -114,6 +114,8 @@ public class BuyerMain extends AppCompatActivity
             PHPRequest request = new PHPRequest("http://101.101.210.207/getLocation.php");
             String result = request.getLocation();
             Log.i("위치 마커",result);
+            double la = 0;
+            double ln = 0;
             try {
                 jsonArray = new JSONArray(result);
                 for(int i = 0 ; i<jsonArray.length(); i++){
@@ -122,9 +124,11 @@ public class BuyerMain extends AppCompatActivity
                     latlist.add(jsonObject.getString("lat"));
                     lnglist.add(jsonObject.getString("lng"));
                     IDlist.add(jsonObject.getString("id"));
+                    if(jsonObject.getString("lat").equals(null)){
+                        continue;}
                     marker.position(new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng")));
-//                    LatLng latLng = new LatLng(jsonObject.getDouble("lat"), jsonObject.getDouble("lng"));
-//                    marker.position(latLng);
+                    LatLng latLng = new LatLng(jsonObject.getDouble("lat"), jsonObject.getDouble("lng"));
+                    marker.position(latLng);
                     marker.title(new String(jsonObject.getString("shopname")));
                     mMap.addMarker(marker);
 

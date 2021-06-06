@@ -44,18 +44,22 @@
         android:layout_height="100dp">
 
         <EditText
-            android:id="@+id/edMenu"
+            android:id="@+id/edM"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:hint="메뉴 이름" />
 
         <EditText
-            android:id="@+id/edPrice"
+            android:id="@+id/edP"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edMenu"
-            android:layout_marginLeft="30dp"
+            android:layout_below="@+id/edM"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="31dp"
+            android:layout_marginLeft="31dp"
+            android:layout_marginTop="1dp"
             android:hint="가격" />
 
         <Button
@@ -64,9 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="4dp"
-            android:layout_marginBottom="11dp"
-            android:layout_toRightOf="@+id/edPrice"
-            android:onClick="menu"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@+id/edP"
             android:text="추가" />
 
         <Button
@@ -76,7 +79,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="77dp"
             android:layout_marginTop="41dp"
-            android:layout_toRightOf="@+id/edPrice"
+            android:layout_toRightOf="@+id/edP"
             android:text="삭제" />
     </RelativeLayout>
 

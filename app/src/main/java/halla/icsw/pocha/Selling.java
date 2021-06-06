@@ -49,6 +49,9 @@ public class Selling extends AppCompatActivity {
         btAdd =(Button)findViewById(R.id.btAdd);
         btDel =(Button)findViewById(R.id.btDelete);
         shopname =(TextView)findViewById(R.id.shopname);
+        list=(ListView)findViewById(R.id.manageMenu);
+        edM=(EditText)findViewById(R.id.edM);
+        edP=(EditText)findViewById(R.id.edP);
         mangeShop();
 
         ArrayAdapter adapter =
@@ -59,12 +62,14 @@ public class Selling extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SparseBooleanArray check= list.getCheckedItemPositions();
-                int count = adapter.getCount() ;
+                int count = adapter.getCount();
                 for (int i = count-1; i >= 0; i--) {
                     if (check.get(i)) {
                         try {
+                            Log.i("삭제됨?",String.valueOf(menu.get(i).get(0)));
                             request = new PHPRequest("http://101.101.210.207/menuDelete.php");
-                            result = request.PHPstate(pref.getString("id",""),String.valueOf(menu.get(i).get(0)));
+                            result = request.menuDelete(pref.getString("id",""),String.valueOf(menu.get(i).get(0)));
+
                         }catch (MalformedURLException e){
                             e.printStackTrace();
                         }
@@ -79,6 +84,7 @@ public class Selling extends AppCompatActivity {
                 }
             }
         });
+
         btAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,15 +97,16 @@ public class Selling extends AppCompatActivity {
                 edP.setText("");
                 try {
                         request = new PHPRequest("http://101.101.210.207/menuInsert.php");
-                        result = request.PHPregist(String.valueOf(edM.getText()), String.valueOf(edP.getText()), String.valueOf(shopname.getText()), pref.getString("id",""));
+                        result = request.PHPregist(pref.getString("id",""),shopname.getText().toString(),String.valueOf(edM.getText()), String.valueOf(edP.getText()));
+
                     if (result.equals("1")) {
-                        Toast.makeText(getApplication(), "등록되었습니다", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getApplicationContext(),SellerMain.class);
-                        startActivity(i);
+                        Toast.makeText(getApplication(), "추가했습니다", Toast.LENGTH_SHORT).show();
 
                     } else {
                         Toast.makeText(getApplication(), "등록 실패", Toast.LENGTH_SHORT).show();
                     }
+                    list.clearChoices() ;
+                    adapter.notifyDataSetChanged();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -115,6 +122,7 @@ public class Selling extends AppCompatActivity {
                         String result = request.PHPstate(pref.getString("id",""),"true");
                         if (result.equals("1")) {
                             Toast.makeText(getApplication(), "가게를 열었습니다", Toast.LENGTH_SHORT).show();
+                            tx1.setText("상태 : OPEN");
                         }
                     }catch (MalformedURLException e){
                         e.printStackTrace();
@@ -126,6 +134,7 @@ public class Selling extends AppCompatActivity {
                         String result = request.PHPstate(pref.getString("id",""),"false");
                         if (result.equals("1")) {
                             Toast.makeText(getApplication(), "가게를 닫았습니다", Toast.LENGTH_SHORT).show();
+                            tx1.setText("상태 : CLOSE");
                         }
                     }catch (MalformedURLException e){
                         e.printStackTrace();

@@ -58,9 +58,9 @@ public class PHPRequest {
         }
     }
 
-   public String PHPregist(final String menuname, final String price, final String n, final String id) {
+   public String PHPregist(final String menuname, final String price,final String shopname,final String id ) {
         try {
-            String postData = "id=" + id + "&shopname=" + n +"&menuname="+menuname + "&price=" + price;
+            String postData = "id=" + id + "&shopname=" + shopname +"&menuname="+menuname + "&price=" + price;
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestMethod("POST");
@@ -216,5 +216,47 @@ public class PHPRequest {
     }
 
 
+    public String getRegisterd(String id) {
+        try {
+            String postData = "id=" + id;
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestMethod("POST");
+            conn.setConnectTimeout(5000);
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            OutputStream outputStream = conn.getOutputStream();
+            outputStream.write(postData.getBytes("UTF-8"));
+            outputStream.flush();
+            outputStream.close();
+            String result = readStream(conn.getInputStream());
+            conn.disconnect();
+            return result;
+        } catch (Exception e) {
+            Log.i("PHPRequest", "request was failed.");
+            return null;
+        }
+    }
 
+    public String menuDelete(String id, String menu) {
+        try {
+            String postData = "id=" + id+"&menuname"+menu;
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestMethod("POST");
+            conn.setConnectTimeout(5000);
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            OutputStream outputStream = conn.getOutputStream();
+            outputStream.write(postData.getBytes("UTF-8"));
+            outputStream.flush();
+            outputStream.close();
+            String result = readStream(conn.getInputStream());
+            conn.disconnect();
+            return result;
+        } catch (Exception e) {
+            Log.i("PHPRequest", "request was failed.");
+            return null;
+        }
+    }
 }
