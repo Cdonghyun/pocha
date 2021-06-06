@@ -14,6 +14,9 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +50,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,7 +58,6 @@ public class BuyerMain extends AppCompatActivity
         implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
 
     private GoogleMap mMap;
-    private Marker currentMarker=null;
     private static final int GPS_ENABLE_REQUEST_CODE=2001;
     private static final int UPDATE_INTERVAL_MS=1000; //1초
     private static final int FASTEST_UPDATE_INTERVAL_MS=500;
@@ -62,28 +65,19 @@ public class BuyerMain extends AppCompatActivity
     boolean needRequest = false;
     String[] REQUIRED_PERMISSIONS =
             {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}; //외부 저장소
-    TextView tx;
 
     JSONArray jsonArray;
     JSONObject jsonObject;
     MarkerOptions marker;
 
-    private ArrayList<String>menuList = new ArrayList<String>();
-    private ArrayList<String>shopList = new ArrayList<String>();
-    private ArrayList<String>priceList = new ArrayList<String>();
-    private ArrayList<String>latlist = new ArrayList<String>();
-    private ArrayList<String>lnglist = new ArrayList<String>();
-    private ArrayList<String>IDlist = new ArrayList<String>();
+
     private ArrayList ja=new ArrayList<>();
     Location currentlocation;
     LatLng currentposition;
-    private Marker getCurrentMarker;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private  Location location;
     private View Layout;
-    private String ad;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,25 +108,18 @@ public class BuyerMain extends AppCompatActivity
             PHPRequest request = new PHPRequest("http://101.101.210.207/getLocation.php");
             String result = request.getLocation();
             Log.i("위치 마커",result);
-            double la = 0;
-            double ln = 0;
             try {
                 jsonArray = new JSONArray(result);
                 for(int i = 0 ; i<jsonArray.length(); i++){
                     jsonObject = jsonArray.getJSONObject(i);
                     marker = new MarkerOptions();
-                    latlist.add(jsonObject.getString("lat"));
-                    lnglist.add(jsonObject.getString("lng"));
-                    IDlist.add(jsonObject.getString("id"));
-                    if(jsonObject.getString("lat").equals(null)){
-                        continue;}
+                    if(jsonObject.getString("lat").equals(null)){ continue;}
+
                     marker.position(new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng")));
-                    LatLng latLng = new LatLng(jsonObject.getDouble("lat"), jsonObject.getDouble("lng"));
-                    marker.position(latLng);
+                    LatLng latLng = new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng"));
                     marker.title(new String(jsonObject.getString("shopname")));
                     mMap.addMarker(marker);
-
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
                     mMap.setOnInfoWindowClickListener(this::onInfoWindowClick);
 
                 }
@@ -143,9 +130,43 @@ public class BuyerMain extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void select() {
+        AutoCompleteTextView edit = (AutoCompleteTextView) findViewById(R.id.edit);
+        Button textbn=(Button)findViewById(R.id.textbn);
+        try {
+            PHPRequest request = new PHPRequest("http://101.101.210.207/getLocation.php");
+            String result = request.getLocation();
+            JSONArray jsonAr = new JSONArray(result);
+            for(int i = 0 ; i<jsonAr.length(); i++){
+                JSONObject jsonObject = jsonAr.getJSONObject(i);
+                if(jsonObject.getString("lat").equals(null)){ continue;}
+
+
+                String items = jsonObject.getString("shopname");
+                edit.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, Collections.singletonList(items)));
+                Log.i("야호",items);
+                textbn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                            if(edit.getText().toString().length() > 0) {
+//                                Location location = getLocationFromAddress(getApplicationContext(), edit.getText().toString());
+//
+//                                showCurrentLocation(location);
+//                            }
+                    }
+                });
+
+            }
+
+        } catch (MalformedURLException | JSONException e) {
+            e.printStackTrace();
         }
 
-        public void onInfoWindowClick(Marker marker){
+    }
+
+    public void onInfoWindowClick(Marker marker){
         SharedPreferences pref = getSharedPreferences("shopID",MODE_PRIVATE);
         SharedPreferences.Editor edit = pref.edit();
 
@@ -153,24 +174,24 @@ public class BuyerMain extends AppCompatActivity
         double la,ln;
         la=marker.getPosition().latitude;
         ln=marker.getPosition().longitude;
-            Log.i("마커 위치",la+" "+ln);
-            try {
-                PHPRequest request = new PHPRequest("http://101.101.210.207/getShopID.php");
-                String result = request.GetShopID(la,ln);
-                Log.i("가게 id",result);
-                edit.putString("shopid",result);
-                edit.commit();
-            }catch (MalformedURLException e){
-                e.printStackTrace();
-            }
-            Intent i = new Intent(getApplicationContext(),Shopinfor.class);
-            startActivity(i);
-
+        Log.i("마커 위치",la+" "+ln);
+        try {
+            PHPRequest request = new PHPRequest("http://101.101.210.207/getShopID.php");
+            String result = request.GetShopID(la,ln);
+            Log.i("가게 id",result);
+            edit.putString("shopid",result);
+            edit.commit();
+        }catch (MalformedURLException e){
+            e.printStackTrace();
         }
+        Intent i = new Intent(getApplicationContext(),Shopinfor.class);
+        startActivity(i);
+
+    }
 
 
 
-        @Override
+    @Override
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
 
@@ -201,7 +222,7 @@ public class BuyerMain extends AppCompatActivity
                 ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
             }
         }
-        LatLng SEOUL = new LatLng(37.30282, 127.908137);//기본은 서울
+        LatLng SEOUL = new LatLng(37.302453, 127.908115);//기본은 서울
         mMap.getUiSettings().setMyLocationButtonEnabled(true); //위치 버튼 가능
         MarkerOptions markerOptions = new MarkerOptions(); // 마커 생성
         markerOptions.position(SEOUL);
@@ -210,7 +231,7 @@ public class BuyerMain extends AppCompatActivity
         UiSettings settings = mMap.getUiSettings();
         settings.setZoomControlsEnabled(true); //줌 버튼
         marker();
-
+        select();
 
     }
 
