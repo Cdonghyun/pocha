@@ -73,7 +73,7 @@ public class BuyerMain extends AppCompatActivity
     ArrayList<String> item=new ArrayList<>();
 
     AutoCompleteTextView edit;
-    private ArrayList ja=new ArrayList<>();
+    ArrayList ja=new ArrayList<>();
     Location currentlocation;
     LatLng currentposition;
     private FusedLocationProviderClient fusedLocationClient;
@@ -116,6 +116,7 @@ public class BuyerMain extends AppCompatActivity
                     jsonObject = jsonArray.getJSONObject(i);
                     if(jsonObject.getString("lat").equals(null)){ continue;}
                     item.add(jsonObject.getString("shopname"));
+                    ja.add(new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng")));
                     loc=new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng"));
                     marker = mMap.addMarker(new MarkerOptions().position(loc).title(jsonObject.getString("shopname")));
                     marker.showInfoWindow();
@@ -140,10 +141,14 @@ public class BuyerMain extends AppCompatActivity
             public void onClick(View v) {
                 for(int i=0;item.size()>i;i++){
                     if(edit.getText().toString().equals(item.get(i))){
-                    String n = item.get(i);
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng((LatLng) ja.get(i)));
+                        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+
+
+
                     }else continue;
                 }
-
 
 
 
