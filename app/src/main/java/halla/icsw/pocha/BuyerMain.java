@@ -71,6 +71,8 @@ public class BuyerMain extends AppCompatActivity
     Marker marker;
     LatLng loc;
     ArrayList<String> item=new ArrayList<>();
+    ArrayList<Double> lat=new ArrayList<>();
+    ArrayList<Double> lng=new ArrayList<>();
 
     AutoCompleteTextView edit;
     ArrayList ja=new ArrayList<>();
@@ -116,10 +118,11 @@ public class BuyerMain extends AppCompatActivity
                     jsonObject = jsonArray.getJSONObject(i);
                     if(jsonObject.getString("lat").equals(null)){ continue;}
                     item.add(jsonObject.getString("shopname"));
+                    lat.add(jsonObject.getDouble("lat"));
+                    lng.add(jsonObject.getDouble("lng"));
                     ja.add(new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng")));
                     loc=new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng"));
                     marker = mMap.addMarker(new MarkerOptions().position(loc).title(jsonObject.getString("shopname")));
-                    marker.showInfoWindow();
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 12));
                     mMap.setOnInfoWindowClickListener(this::onInfoWindowClick);
                 }
@@ -141,12 +144,11 @@ public class BuyerMain extends AppCompatActivity
             public void onClick(View v) {
                 for(int i=0;item.size()>i;i++){
                     if(edit.getText().toString().equals(item.get(i))){
-
                         mMap.moveCamera(CameraUpdateFactory.newLatLng((LatLng) ja.get(i)));
                         mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
-
-
-
+                        loc = new LatLng(lat.get(i),lng.get(i));
+                        marker = mMap.addMarker(new MarkerOptions().position(loc).title(item.get(i)));
+                        marker.showInfoWindow();
                     }else continue;
                 }
 
