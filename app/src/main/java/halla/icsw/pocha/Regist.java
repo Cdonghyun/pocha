@@ -52,6 +52,7 @@ public class Regist extends AppCompatActivity {
         bt3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 SparseBooleanArray check= list.getCheckedItemPositions();
                 int count = adapter.getCount() ;
 
@@ -71,7 +72,6 @@ public class Regist extends AppCompatActivity {
             public void onClick(View v) {
                 String sname = shopName.getText().toString();
                 PHPRequest request;
-
                 try {
                     for(int i=0;i<menu.size();i++) {
                         request = new PHPRequest("http://101.101.210.207/menuInsert.php");
