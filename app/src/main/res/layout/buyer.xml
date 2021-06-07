@@ -15,7 +15,7 @@
             android:id="@+id/edit"
             android:layout_width="344dp"
             android:layout_height="wrap_content"
-            android:completionHint="pick an item"
+            android:completionHint="pick an store"
             android:completionThreshold="1" />
 
         <Button

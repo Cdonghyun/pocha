@@ -70,7 +70,7 @@ public class BuyerMain extends AppCompatActivity
     JSONObject jsonObject;
     MarkerOptions marker;
 
-
+    AutoCompleteTextView edit;
     private ArrayList ja=new ArrayList<>();
     Location currentlocation;
     LatLng currentposition;
@@ -133,8 +133,10 @@ public class BuyerMain extends AppCompatActivity
     }
 
     public void select() {
-        AutoCompleteTextView edit = (AutoCompleteTextView) findViewById(R.id.edit);
+        edit=(AutoCompleteTextView) findViewById(R.id.edit);
         Button textbn=(Button)findViewById(R.id.textbn);
+
+
         try {
             PHPRequest request = new PHPRequest("http://101.101.210.207/getLocation.php");
             String result = request.getLocation();
@@ -146,21 +148,24 @@ public class BuyerMain extends AppCompatActivity
 
                 String items = jsonObject.getString("shopname");
                 edit.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, Collections.singletonList(items)));
+
+
                 Log.i("야호",items);
                 textbn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                            if(edit.getText().toString().length() > 0) {
-//                                Location location = getLocationFromAddress(getApplicationContext(), edit.getText().toString());
-//
-//                                showCurrentLocation(location);
-//                            }
+                            if(edit.getText().toString().length() > 0) {
+
+
+                            }
                     }
                 });
 
             }
 
-        } catch (MalformedURLException | JSONException e) {
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
