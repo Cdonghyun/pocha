@@ -68,7 +68,9 @@ public class BuyerMain extends AppCompatActivity
 
     JSONArray jsonArray;
     JSONObject jsonObject;
-    MarkerOptions marker;
+    Marker marker;
+    LatLng loc;
+    ArrayList<String> item=new ArrayList<>();
 
     AutoCompleteTextView edit;
     private ArrayList ja=new ArrayList<>();
@@ -112,16 +114,13 @@ public class BuyerMain extends AppCompatActivity
                 jsonArray = new JSONArray(result);
                 for(int i = 0 ; i<jsonArray.length(); i++){
                     jsonObject = jsonArray.getJSONObject(i);
-                    marker = new MarkerOptions();
                     if(jsonObject.getString("lat").equals(null)){ continue;}
-
-                    marker.position(new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng")));
-                    LatLng latLng = new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng"));
-                    marker.title(new String(jsonObject.getString("shopname")));
-                    mMap.addMarker(marker);
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+                    item.add(jsonObject.getString("shopname"));
+                    loc=new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng"));
+                    marker = mMap.addMarker(new MarkerOptions().position(loc).title(jsonObject.getString("shopname")));
+                    marker.showInfoWindow();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 12));
                     mMap.setOnInfoWindowClickListener(this::onInfoWindowClick);
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -133,43 +132,27 @@ public class BuyerMain extends AppCompatActivity
     }
 
     public void select() {
+        Button tx = (Button)findViewById(R.id.textbn);
         edit=(AutoCompleteTextView) findViewById(R.id.edit);
-        Button textbn=(Button)findViewById(R.id.textbn);
+        edit.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,item));
+        tx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(int i=0;item.size()>i;i++){
+                    if(edit.getText().toString().equals(item.get(i))){
+                    String n = item.get(i);
+                    }else continue;
+                }
 
 
-        try {
-            PHPRequest request = new PHPRequest("http://101.101.210.207/getLocation.php");
-            String result = request.getLocation();
-            JSONArray jsonAr = new JSONArray(result);
-            for(int i = 0 ; i<jsonAr.length(); i++){
-                JSONObject jsonObject = jsonAr.getJSONObject(i);
-                if(jsonObject.getString("lat").equals(null)){ continue;}
 
 
-                String items = jsonObject.getString("shopname");
-                edit.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, Collections.singletonList(items)));
-
-
-                Log.i("야호",items);
-                textbn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                            if(edit.getText().toString().length() > 0) {
-
-
-                            }
-                    }
-                });
+            }
+        });
 
             }
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-    }
 
     public void onInfoWindowClick(Marker marker){
         SharedPreferences pref = getSharedPreferences("shopID",MODE_PRIVATE);

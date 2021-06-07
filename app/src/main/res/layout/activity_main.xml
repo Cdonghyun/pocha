@@ -17,14 +17,14 @@
         android:textColor="@android:color/white"
         android:layout_marginTop="200dp"
         android:text="포 차 "
-        android:textSize="34sp" />
+        android:textSize="40sp" />
     <EditText
 
         android:id="@+id/edtId"
         android:layout_marginTop="15dp"
         android:layout_gravity="center"
         android:layout_width="200dp"
-        android:layout_height="27dp"
+        android:layout_height="35dp"
         android:hint="아이디"
         android:background="@drawable/edit"
         />
@@ -33,10 +33,11 @@
         android:id="@+id/edtPwd"
         android:layout_gravity="center"
         android:layout_width="200dp"
-        android:layout_height="27dp"
+        android:layout_height="35dp"
         android:hint="비밀번호"
         android:inputType="textPassword"
         android:background="@drawable/edit"
+        android:layout_marginBottom="10dp"
         />
    <LinearLayout
 
@@ -45,6 +46,9 @@
        android:layout_height="wrap_content"
        >
        <Button
+           android:layout_margin="10dp"
+           android:textColor="@android:color/white"
+           android:background="@drawable/list"
            android:onClick="logIn"
            android:text="로그인"
            android:layout_gravity="center"
@@ -52,6 +56,9 @@
            android:layout_height="wrap_content"/>
 
        <Button
+           android:layout_margin="10dp"
+           android:textColor="@android:color/white"
+           android:background="@drawable/list"
            android:onClick="signUp"
            android:text="가입"
            android:layout_gravity="center"

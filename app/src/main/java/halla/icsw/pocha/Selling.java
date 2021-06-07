@@ -2,10 +2,12 @@ package halla.icsw.pocha;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -55,7 +57,16 @@ public class Selling extends AppCompatActivity {
         mangeShop();
 
         ArrayAdapter adapter =
-                new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, s);
+                new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, s){
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent)
+                    {
+                        View view = super.getView(position, convertView, parent);
+                        TextView tv = (TextView) view.findViewById(android.R.id.text1);
+                        tv.setTextColor(Color.WHITE);
+                        return view;
+                    }
+                };
         list.setAdapter(adapter);
         SharedPreferences pref = getSharedPreferences("memberInformation",MODE_PRIVATE);
         btDel.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +174,11 @@ public class Selling extends AppCompatActivity {
                 shopname.setText(jsonObject.getString("shopname"));
                 if(jsonObject.getString("status").equals("0")){
                     tx1.setText("상태 : CLOSE");
-                }else tx1.setText("상태 : OPEN");
+                    sw.setChecked(false);
+                }else {
+                    tx1.setText("상태 : OPEN");
+                    sw.setChecked(true);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

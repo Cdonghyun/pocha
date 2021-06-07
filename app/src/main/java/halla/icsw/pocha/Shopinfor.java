@@ -2,9 +2,11 @@ package halla.icsw.pocha;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,7 +39,16 @@ public class Shopinfor extends AppCompatActivity {
 
         showShop();
         ArrayAdapter adapter =
-                new ArrayAdapter(this, android.R.layout.simple_list_item_1, s);
+                new ArrayAdapter(this, android.R.layout.simple_list_item_1, s){
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent)
+                    {
+                        View view = super.getView(position, convertView, parent);
+                        TextView tv = (TextView) view.findViewById(android.R.id.text1);
+                        tv.setTextColor(Color.WHITE);
+                        return view;
+                    }
+                };
         list.setAdapter(adapter);
     }
 

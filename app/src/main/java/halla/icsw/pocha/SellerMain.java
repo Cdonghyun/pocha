@@ -116,7 +116,6 @@ public class SellerMain extends AppCompatActivity
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
 
-
         //퍼미션 있는지 확인
         int FineLocationPermission = ContextCompat
                 .checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -143,13 +142,14 @@ public class SellerMain extends AppCompatActivity
                 ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
             }
         }
+
         LatLng SEOUL = new LatLng(37.505, 126.924);//기본은 서울
         mMap.getUiSettings().setMyLocationButtonEnabled(true); //위치 버튼 가능
         MarkerOptions markerOptions = new MarkerOptions(); // 마커 생성
         markerOptions.position(SEOUL);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));  // 초기 위치
 //        mMap.setMyLocationEnabled(true); //내위치 표시
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         UiSettings settings = mMap.getUiSettings();
         settings.setZoomControlsEnabled(true); //줌 버튼
     }

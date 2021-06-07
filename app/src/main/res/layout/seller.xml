@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@drawable/main"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -12,6 +13,8 @@
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
     <Button
+        android:textColor="@android:color/white"
+        android:background="@drawable/list"
         android:layout_marginTop="15dp"
         android:text="현재 위치로 시작하기"
         android:onClick="shopStart"
